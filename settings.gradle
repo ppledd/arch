@@ -1,0 +1,3 @@
+rootProject.name='Arch'
+include ':app'
+include ':lib-architecture'
