@@ -3,6 +3,7 @@ package com.zjy.arch
 import com.zjy.architecture.data.Result
 import com.zjy.architecture.ext.apiCall
 import com.zjy.architecture.mvvm.LoadingViewModel
+import com.zjy.architecture.mvvm.request
 import com.zjy.architecture.net.HttpResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply from: versions
 
 android {
@@ -23,6 +24,14 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
 }
 
 dependencies {
@@ -30,4 +39,10 @@ dependencies {
 
     implementation deps.androidx.constraint_layout
     implementation project(':lib-architecture')
+
+    implementation deps.navigation.runtime_ktx
+    implementation deps.navigation.fragment_ktx
+    implementation deps.navigation.ui_ktx
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
 }

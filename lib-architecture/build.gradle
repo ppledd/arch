@@ -67,4 +67,10 @@ dependencies {
 
     api deps.glide.runtime
     api deps.brvah
+    api deps.gson
+
+//    api deps.moshi
+//    api deps.moshi_kotlin
+//    kapt deps.moshi_codegen
+//    annotationProcessor deps.moshi_codegen
 }
