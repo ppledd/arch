@@ -20,6 +20,13 @@ val Float.dp
         Resources.getSystem().displayMetrics
     ).roundToInt()
 
+val Int.dp
+    get() = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        Resources.getSystem().displayMetrics
+    ).roundToInt()
+
 /**
  * 将px转换为dp
  */

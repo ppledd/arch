@@ -3,7 +3,7 @@ apply plugin: 'koin'
 
 buildscript {
     ext {
-        versions = "${rootDir}/versions.gradle"
+        versions = "${rootDir}/lib-architecture/versions.gradle"
     }
     apply from: versions
     repositories {
