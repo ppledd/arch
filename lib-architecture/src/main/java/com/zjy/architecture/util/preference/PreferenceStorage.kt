@@ -1,47 +1,16 @@
-package com.zjy.architecture.util
+package com.zjy.architecture.util.preference
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.zjy.architecture.Arch
-import kotlin.reflect.KProperty
 
 /**
  * @author zhengjy
- * @since 2020/01/13
- * Description:Preference存储代理类
+ * @since 2020/07/15
+ * Description:SharedPreferences存储
  */
-class PreferenceDelegate<T>(
-    private val key: String,
-    private val value: T,
-    private val sp: IStorage = PreferenceSingleton.instance
-) {
-
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return sp.getValue(key, value)
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        sp.putValue(key, value)
-    }
-}
-
-/**
- * 通用存储接口
- */
-interface IStorage {
-
-    fun <T> getValue(name: String, default: T): T
-
-    fun <T> putValue(name: String, value: T)
-}
-
-/**
- * SharedPreferences存储
- *
- * @param sp    SharedPreferences
- */
-class Preferences(private val sp: SharedPreferences) : IStorage {
+class PreferenceStorage(private val sp: SharedPreferences) : IStorage {
 
     override fun <T> getValue(name: String, default: T): T = with(sp) {
         val res: Any = when (default) {
@@ -71,18 +40,16 @@ class Preferences(private val sp: SharedPreferences) : IStorage {
 /**
  * 应用默认的SharedPreferences
  */
-private class PreferenceSingleton private constructor(
-    private val preferences: Preferences
-) : IStorage by preferences {
+internal class DefaultPreference {
 
     companion object {
 
         val instance by lazy {
             val shared = Arch.context.getSharedPreferences(
-                "${Arch.context.packageName}.sharedpreference",
-                Context.MODE_PRIVATE
+                    "${Arch.context.packageName}.sharedpreference",
+                    Context.MODE_PRIVATE
             )
-            PreferenceSingleton(Preferences(shared))
+            PreferenceStorage(shared)
         }
     }
 }
