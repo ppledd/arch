@@ -1,7 +1,9 @@
 package com.zjy.arch
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
@@ -17,17 +19,30 @@ class MainActivity : AppCompatActivity() {
             "N5FKueEq4oT4VxcqjELLtBaqkMMdh6Fkiaya1uLfD0clTbjocU5pvZo7VK2ak3A/640?wx_fmt=png&" +
             "tp=webp&wxfrom=5&wx_lazy=1&wx_co=1"
 
+    private val viewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val isEdit = AppPreference["app", true]
+        AppPreference["IS_LOGIN"] = "zhengjy"
+        AppPreference["IS_LOGIN"] = 128
+        val login = AppPreference.isLogin
+        if (AppPreference["IS_LOGIN", false] == AppPreference.isLogin) {
+            println("succeed!")
+        }
 
         imageView?.apply {
             load(imageUrl) {
                 apply(RequestOptions().placeholder(R.mipmap.ic_launcher))
             }
             setOnClickListener {
-
+                startActivity(Intent(this@MainActivity, WebViewActivity::class.java))
             }
+        }
+        textView.setOnClickListener {
+            startActivity(Intent(this@MainActivity, WidgetActivity::class.java))
         }
         liveData(Dispatchers.IO) {
             emit("")

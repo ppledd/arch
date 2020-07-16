@@ -1,6 +1,6 @@
 package com.zjy.architecture.mvvm
 
-import android.util.Log
+import com.tencent.mars.xlog.Log
 import com.zjy.architecture.data.Result
 import com.zjy.architecture.ext.handleException
 import kotlinx.coroutines.CancellationException
@@ -64,8 +64,9 @@ fun <T> LoadingViewModel.request(
                         }
                     }
                 } catch (e: Exception) {
+                    Log.e("LoadingViewModel", "Exception: ${e.message}")
                     if (e is CancellationException) {
-                        Log.e("LoadingViewModel", "Exception: ${e.message}")
+                        // do nothing
                     } else {
                         processError(onFail, handleException(e))
                     }

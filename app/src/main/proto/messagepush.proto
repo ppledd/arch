@@ -1,0 +1,8 @@
+syntax = "proto3";
+package com.zjy.chat.data.proto;
+
+message MessagePush {
+  string topic = 1;
+  string content = 2;
+  string from = 3;
+}

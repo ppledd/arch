@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <com.qmuiteam.qmui.nestedScroll.QMUIContinuousNestedScrollLayout
+        android:id="@+id/mCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+<!--    <com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout-->
+<!--        android:id="@+id/pull_to_refresh"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <com.qmuiteam.qmui.nestedScroll.QMUIContinuousNestedScrollLayout-->
+<!--            android:id="@+id/mCoordinatorLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+<!--    </com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout>-->
+</FrameLayout>

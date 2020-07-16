@@ -11,6 +11,6 @@
 
     <style name="NormalText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">#6D715F</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">35sp</item>
     </style>
 </resources>
