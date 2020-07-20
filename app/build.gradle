@@ -20,9 +20,7 @@ android {
 
     sourceSets {
         main {
-            java {
-                srcDirs 'src/main/java'
-            }
+            // 配置protobuf源码目录
             proto {
                 srcDirs 'src/main/proto'
             }
@@ -48,16 +46,11 @@ android {
 
 protobuf {
     protoc {
-        // You still need protoc like in the non-Android case
+        // 配置protoc编译器
         artifact = deps.protoc
     }
-    plugins {
-        javalite {
-            // The codegen for lite comes as a separate artifact
-            artifact = deps.protoc_gen
-        }
-    }
     generateProtoTasks {
+        //这里配置生成目录，编译后会在build的目录下生成对应的java文件
         all().each { task ->
             task.builtins {
                 // In most cases you don't need the full Java output
@@ -65,7 +58,7 @@ protobuf {
                 remove java
             }
             task.plugins {
-                javalite {}
+                java {}
             }
         }
     }
@@ -83,6 +76,7 @@ dependencies {
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
     implementation deps.proto
+    implementation deps.protoc
 
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
     implementation "com.qmuiteam:qmui:2.0.0-alpha10"

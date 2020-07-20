@@ -64,7 +64,7 @@ fun <T> LoadingViewModel.request(
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e("LoadingViewModel", "Exception: ${e.message}")
+                    Log.e("LoadingViewModel", "", e)
                     if (e is CancellationException) {
                         // do nothing
                     } else {

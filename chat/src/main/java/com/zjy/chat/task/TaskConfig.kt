@@ -12,7 +12,7 @@ import java.lang.annotation.Inherited
 @Inherited
 annotation class TaskConfig(
         val host: String = "",
-        val path: String,
+        val path: String = "",
         val shortChannelSupport: Boolean = true,
         val longChannelSupport: Boolean = false,
         val cmdID: Int = -1

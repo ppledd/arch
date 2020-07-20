@@ -39,5 +39,5 @@ dependencies {
     api(project(':lib-architecture')) {
         exclude group: 'com.tencent.mars', module: 'mars-xlog'
     }
-    implementation deps.mars.core
+    api deps.mars.core
 }

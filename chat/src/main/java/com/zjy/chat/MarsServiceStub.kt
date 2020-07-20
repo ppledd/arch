@@ -35,6 +35,13 @@ class MarsServiceStub(
         private val DEVICE_NAME = "${Build.MANUFACTURER}-${Build.MODEL}"
         private val DEVICE_TYPE = "android-${Build.VERSION.SDK_INT}"
         private val TASK_ID_TO_WRAPPER = ConcurrentHashMap<Int, MarsTaskWrapper>()
+
+        private val NET_CHECK_SHORT = arrayOf(
+            "www.baidu.com",
+            "www.qq.com",
+            "www.163.com",
+            "www.google.com"
+        )
     }
 
     private val deviceInfo = AppLogic.DeviceInfo(DEVICE_NAME, DEVICE_TYPE)
@@ -42,8 +49,9 @@ class MarsServiceStub(
 
     private val filters = ConcurrentLinkedQueue<MarsPushMessageFilter>()
 
-    override fun send(taskWrapper: MarsTaskWrapper, taskProperties: Bundle): Int {
+    override fun send(taskWrapper: MarsTaskWrapper): Int {
         val _task = StnLogic.Task(StnLogic.Task.EShort, 0, "", ArrayList())
+        val taskProperties = taskWrapper.properties
 
         // Set host & cgi path
         val host = taskProperties.getString(TaskProperty.OPTIONS_HOST)
@@ -157,11 +165,11 @@ class MarsServiceStub(
     }
 
     override fun requestNetCheckShortLinkHosts(): Array<String> {
-        return arrayOf()
+        return NET_CHECK_SHORT
     }
 
     override fun isLogoned(): Boolean {
-        return false
+        return true
     }
 
     override fun onTaskEnd(taskID: Int, userContext: Any?, errType: Int, errCode: Int): Int {
@@ -239,8 +247,12 @@ class MarsServiceStub(
         return null
     }
 
-    override fun getAccountInfo(): AppLogic.AccountInfo {
-        return accountInfo
+    override fun getAccountInfo(): AppLogic.AccountInfo? {
+        return if (accountInfo.uin == 0L && accountInfo.userName.isNullOrEmpty()) {
+            null
+        } else {
+            accountInfo
+        }
     }
 
     override fun getClientVersion(): Int {

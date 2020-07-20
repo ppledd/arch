@@ -12,7 +12,7 @@ class DefaultServiceProfile : ServiceProfile {
     }
 
     override fun longLinkHost(): String {
-        return ""
+        return "mars.cn"
     }
 
     override fun longLinkPorts(): IntArray {

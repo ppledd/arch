@@ -55,7 +55,7 @@ abstract class AbstractTaskWrapper : MarsTaskWrapper.Stub() {
     }
 
     private fun format(bundle: Bundle): String {
-        val sb = StringBuilder("{")
+        val sb = StringBuilder("{ ")
         val keys = bundle.keySet()
         for (k in keys) {
             val obj = bundle[k]

@@ -7,7 +7,7 @@ import com.zjy.chat.remote.MarsPushMessageFilter;
 
 interface MarsService {
 
-    int send(MarsTaskWrapper taskWrapper, in Bundle taskProperties);
+    int send(MarsTaskWrapper taskWrapper);
 
     void cancel(int taskID);
 

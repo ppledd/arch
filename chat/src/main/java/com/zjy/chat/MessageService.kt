@@ -35,7 +35,6 @@ class MessageService : Service(), MarsService {
     private lateinit var stub: MarsServiceStub
 
     override fun onCreate() {
-        StnLogic()
         val profile = factory.createServiceProfile()
         stub = MarsServiceStub(applicationContext, profile)
         // set callback
@@ -79,8 +78,8 @@ class MessageService : Service(), MarsService {
         stub.setForeground(isForeground)
     }
 
-    override fun send(taskWrapper: MarsTaskWrapper?, taskProperties: Bundle?): Int {
-        return stub.send(taskWrapper, taskProperties)
+    override fun send(taskWrapper: MarsTaskWrapper): Int {
+        return stub.send(taskWrapper)
     }
 
     override fun cancel(taskID: Int) {

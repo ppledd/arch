@@ -15,7 +15,7 @@ class ChatServiceProfileFactory(
         return try {
             provider.invoke()
         } catch (e: Exception) {
-            Log.e("ServerProfileFactory", "${e.message}")
+            Log.e("ServerProfileFactory", "", e)
             DefaultServiceProfile()
         }
     }

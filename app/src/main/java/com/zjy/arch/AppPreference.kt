@@ -12,6 +12,7 @@ import com.zjy.architecture.util.preference.PreferenceStorage
  * Description:
  */
 object AppPreference : Preference {
+
     override val sp: IStorage = PreferenceStorage(MMKV.defaultMMKV())
 
     val isLogin by PreferenceDelegate("IS_LOGIN", false, sp)

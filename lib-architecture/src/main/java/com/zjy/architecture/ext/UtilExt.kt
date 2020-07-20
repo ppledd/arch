@@ -11,7 +11,7 @@ inline fun <reified T, R> T.tryWith(crossinline block: () -> R): R? {
     return try {
         block()
     } catch (e: Exception) {
-        Log.e(T::class.java.simpleName, e.message)
+        Log.e(T::class.java.name, "", e)
         null
     }
 }

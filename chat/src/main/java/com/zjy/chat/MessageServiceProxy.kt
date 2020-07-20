@@ -45,10 +45,10 @@ class MessageServiceProxy : ServiceConnection {
         private var gContext: Context? = null
         private var gPackageName: String? = null
         private var gClassName: String? = null
-        private const val SERVICE_DEFAULT_CLASSNAME = "com.zjy.chat.MessageServiceNative"
+        private const val SERVICE_DEFAULT_CLASSNAME = "com.zjy.chat.MessageService"
 
         @JvmStatic
-        fun init(context: Context, packageName: String?, provider: (() -> ServiceProfile)? = null) {
+        fun init(context: Context, packageName: String? = null, provider: (() -> ServiceProfile)? = null) {
             gContext = context.applicationContext
             gPackageName = packageName ?: context.packageName
             gClassName = SERVICE_DEFAULT_CLASSNAME
@@ -98,8 +98,8 @@ class MessageServiceProxy : ServiceConnection {
                     Log.e(TAG, "remote mars service bind failed")
                     return@tryWith
                 }
-                block?.invoke()
             }
+            block?.invoke()
         }
     }
 
@@ -180,13 +180,15 @@ class MessageServiceProxy : ServiceConnection {
         val taskWrapper = queue.take() ?: return@checkService
         Log.d(TAG, "sending task = %s", taskWrapper)
         val cgiPath = taskWrapper.properties.getString(TaskProperty.OPTIONS_CGI_PATH)
-        val globalCmdID = GLOBAL_CMD_ID_MAP[cgiPath]
-        if (globalCmdID != null) {
-            taskWrapper.properties.putInt(TaskProperty.OPTIONS_CMD_ID, globalCmdID)
-            Log.i(TAG, "overwrite cmdID with global cmdID Map: %s -> %d", cgiPath, globalCmdID)
+        if (cgiPath != null) {
+            val globalCmdID = GLOBAL_CMD_ID_MAP[cgiPath]
+            if (globalCmdID != null) {
+                taskWrapper.properties.putInt(TaskProperty.OPTIONS_CMD_ID, globalCmdID)
+                Log.i(TAG, "overwrite cmdID with global cmdID Map: %s -> %d", cgiPath, globalCmdID)
+            }
         }
 
-        val taskID = service?.send(taskWrapper, taskWrapper.properties) ?: -1
+        val taskID = service?.send(taskWrapper) ?: -1
         // NOTE: Save taskID to taskWrapper here
         taskWrapper.properties.putInt(TaskProperty.OPTIONS_CMD_ID, taskID)
     }
