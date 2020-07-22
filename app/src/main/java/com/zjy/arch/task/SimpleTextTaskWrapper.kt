@@ -13,13 +13,21 @@ import com.zjy.chat.task.TaskConfig
  * @since 2020/07/17
  * Description:
  */
-@TaskConfig(cmdID = Main.CmdID.CMD_ID_SEND_MESSAGE_VALUE)
+@TaskConfig(
+    host = "192.168.21.155",
+    path = "/mars/sendmessage",
+    cmdID = Main.CmdID.CMD_ID_SEND_MESSAGE_VALUE
+)
 class SimpleTextTaskWrapper(
     private val text: String
 ) : AbstractTaskWrapper() {
 
     private val request: JsonObject = JsonObject()
     private var response: JsonObject = JsonObject()
+
+    init {
+        request.addProperty("text", text)
+    }
 
     override fun onTaskEnd(errType: Int, errCode: Int) {
 
@@ -39,7 +47,6 @@ class SimpleTextTaskWrapper(
     }
 
     override fun req2buf(): ByteArray {
-        request.addProperty("text", text)
         return request.toString().toByteArray()
     }
 

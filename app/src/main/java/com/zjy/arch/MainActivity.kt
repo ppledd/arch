@@ -63,12 +63,16 @@ class MainActivity : AppCompatActivity() {
                     return 100
                 }
 
+                override fun longLinkDebugIP(): String? {
+                    return "192.168.21.155"
+                }
+
                 override fun longLinkHost(): String {
                     return "192.168.21.155"
                 }
 
                 override fun longLinkPorts(): IntArray {
-                    return intArrayOf(8080)
+                    return intArrayOf(8080, 8081, 9090)
                 }
 
                 override fun shortLinkPort(): Int {
