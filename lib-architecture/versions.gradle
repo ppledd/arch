@@ -12,6 +12,8 @@ versions.activity = "1.1.0"
 versions.cardview = "1.0.0"
 versions.annotations = "1.1.0"
 versions.recyclerview = "1.1.0"
+versions.documentfile = "1.0.1"
+versions.viewpager2 = "1.0.0"
 versions.legacy = "1.0.0"
 versions.support = "1.1.0"
 
@@ -26,6 +28,8 @@ versions.work = "2.3.4"
 
 versions.koin = "2.1.5"
 versions.glide = "4.8.0"
+versions.arouter = "1.4.0"
+versions.arouterc = "1.2.1"
 versions.okhttp = "3.9.0"
 versions.retrofit = "2.6.0"
 versions.gson = "2.8.6"
@@ -34,6 +38,7 @@ versions.moshi = "1.9.3"
 versions.mmkv = "1.2.1"
 versions.mars = "1.2.3"
 versions.proto = "3.11.0"
+versions.permissionx = "1.3.0"
 
 def build_versions = [:]
 build_versions.min_sdk = 21
@@ -60,6 +65,8 @@ androidx.constraint_layout = "androidx.constraintlayout:constraintlayout:$versio
 androidx.cardview = "androidx.cardview:cardview:$versions.cardview"
 androidx.annotations = "androidx.annotation:annotation:$versions.annotations"
 androidx.recyclerview = "androidx.recyclerview:recyclerview:$versions.recyclerview"
+androidx.documentfile = "androidx.documentfile:documentfile:$versions.documentfile"
+androidx.viewpager2 = "androidx.viewpager2:viewpager2:$versions.viewpager2"
 androidx.legacy = "androidx.legacy:legacy-support-core-utils:$versions.legacy"
 deps.androidx = androidx
 
@@ -138,6 +145,11 @@ glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
 glide.compiler = "com.github.bumptech.glide:compiler:$versions.glide"
 deps.glide = glide
 
+def arouter = [:]
+arouter.api = "com.alibaba:arouter-api:$versions.arouter"
+arouter.compiler = "com.alibaba:arouter-compiler:$versions.arouterc"
+deps.arouter = arouter
+
 // 多功能RecyclerView的Adapter
 deps.brvah = "com.github.CymChad:BaseRecyclerViewAdapterHelper:$versions.brvah"
 // json转换
@@ -157,5 +169,8 @@ deps.mars = mars
 // ProtoBuf
 deps.proto = "com.google.protobuf:protobuf-java:$versions.proto"
 deps.protoc = "com.google.protobuf:protoc:$versions.proto"
+// 动态权限请求库
+deps.permissionx = "com.permissionx.guolindev:permissionx:$versions.permissionx"
+
 
 ext.deps = deps

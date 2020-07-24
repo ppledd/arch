@@ -1,8 +1,13 @@
 package com.zjy.arch
 
+import android.content.ContentValues
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.bumptech.glide.request.RequestOptions
@@ -21,6 +26,7 @@ import com.zjy.chat.config.ServiceProfile
 import com.zjy.filepicker.FileBrowserActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -95,6 +101,12 @@ class MainActivity : AppCompatActivity() {
         button2.setOnClickListener {
             startActivity(Intent(this, FileBrowserActivity::class.java))
         }
+        button3.setOnClickListener {
+            startActivity(Intent(this, ViewPager2Activity::class.java))
+        }
+        button4.setOnClickListener {
+
+        }
     }
 
     private fun gson() {
@@ -102,36 +114,19 @@ class MainActivity : AppCompatActivity() {
         textView.text = depInfo.data.realName
     }
 
-    private fun moshi() {
-//        val moshi = Moshi.Builder()
-//            .add(KotlinJsonAdapterFactory())
-//            .build()
-//
-//        val adapter = HttpResultJsonAdapter<DepInfo>(moshi, arrayOf(DepInfo::class.java))
-//        val depInfo = adapter.fromJson(JSON) as HttpResult<DepInfo>
-
-//        val depInfo = moshi.adapter<HttpResult<DepInfo>>(
-//            Types.newParameterizedType(HttpResult::class.java, DepInfo::class.java)
-//        ).fromJson(JSON) as HttpResult<DepInfo>
-
-//        val depInfo = moshi.adapter<HttpResult<DepInfo>>(HttpResult::class.java).fromJson(JSON)
-
-//        textView.text = depInfo.data.position
-    }
-
     override fun onPause() {
         super.onPause()
-        MessageServiceProxy.setForeground(false)
+//        MessageServiceProxy.setForeground(false)
     }
 
     override fun onResume() {
         super.onResume()
-        MessageServiceProxy.setForeground(true)
+//        MessageServiceProxy.setForeground(true)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Arch.release()
-        Mars.onDestroy()
+//        Mars.onDestroy()
     }
 }
