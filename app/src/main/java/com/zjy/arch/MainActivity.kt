@@ -18,6 +18,7 @@ import com.zjy.architecture.ext.load
 import com.zjy.architecture.net.HttpResult
 import com.zjy.chat.MessageServiceProxy
 import com.zjy.chat.config.ServiceProfile
+import com.zjy.filepicker.FileBrowserActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 
@@ -57,36 +58,42 @@ class MainActivity : AppCompatActivity() {
             emit("")
         }
         gson()
-        MessageServiceProxy.init(this) {
-            object : ServiceProfile {
-                override fun clientVersion(): Int {
-                    return 100
-                }
-
-                override fun longLinkDebugIP(): String? {
-                    return "192.168.21.155"
-                }
-
-                override fun longLinkHost(): String {
-                    return "192.168.21.155"
-                }
-
-                override fun longLinkPorts(): IntArray {
-                    return intArrayOf(8080, 8081, 9090)
-                }
-
-                override fun shortLinkPort(): Int {
-                    return 8080
-                }
-            }
-        }
-        MessageServiceProxy.accountInfo = AppLogic.AccountInfo(20L, "郑家烨")
+//        MessageServiceProxy.init(this) {
+//            object : ServiceProfile {
+//                override fun clientVersion(): Int {
+//                    return 100
+//                }
+//
+//                override fun longLinkDebugIP(): String? {
+//                    return "192.168.21.155"
+//                }
+//
+//                override fun longLinkHost(): String {
+//                    return "192.168.21.155"
+//                }
+//
+//                override fun longLinkPorts(): IntArray {
+//                    return intArrayOf(8080, 8081, 9090)
+//                }
+//
+//                override fun shortLinkPort(): Int {
+//                    return 8080
+//                }
+//            }
+//        }
+//        MessageServiceProxy.accountInfo = AppLogic.AccountInfo(20L, "郑家烨")
+//        button.setOnClickListener {
+//            content.text.toString().trim().apply {
+//                if (isNotEmpty()) {
+//                    MessageServiceProxy.send(SimpleTextTaskWrapper(this))
+//                }
+//            }
+//        }
         button.setOnClickListener {
-            content.text.toString().trim().apply {
-                if (isNotEmpty()) {
-                    MessageServiceProxy.send(SimpleTextTaskWrapper(this))
-                }
-            }
+
+        }
+        button2.setOnClickListener {
+            startActivity(Intent(this, FileBrowserActivity::class.java))
         }
     }
 

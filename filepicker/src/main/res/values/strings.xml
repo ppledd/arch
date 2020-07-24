@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">文件选择器</string>
+    <string name="rename_title">重命名</string>
+    <string name="rename_okay">重命名</string>
+    <string name="rename_cancel">取消</string>
+
+    <string name="error_no_activity">找不到能打开"%1$s"的应用</string>
+    <string name="empty_folder_tips">文件夹为空</string>
+</resources>

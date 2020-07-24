@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zjy.filepicker">
+
+    <application>
+
+        <activity
+            android:name=".FileBrowserActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+    </application>
+</manifest>

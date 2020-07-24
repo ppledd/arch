@@ -1,3 +1,4 @@
+include ':filepicker'
 include ':chat'
 rootProject.name='Arch'
 include ':app'

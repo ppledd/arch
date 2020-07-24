@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.zjy.arch"
         minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -67,9 +67,11 @@ protobuf {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':filepicker')
     implementation project(':chat')
 
     implementation deps.androidx.constraint_layout
+    implementation deps.androidx.viewpager2
     implementation deps.navigation.runtime_ktx
     implementation deps.navigation.fragment_ktx
     implementation deps.navigation.ui_ktx
