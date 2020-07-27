@@ -53,6 +53,7 @@ dependencies {
     api deps.androidx.core_ktx
     api deps.androidx.activity_ktx
     api deps.androidx.fragment_ktx
+    api deps.androidx.documentfile
 
     api deps.lifecycle.viewmodel_ktx
     api deps.lifecycle.livedata_ktx
@@ -68,6 +69,7 @@ dependencies {
     api deps.glide.runtime
     api deps.brvah
     api deps.gson
+    api deps.background
 
     api deps.mars.xlog
     api deps.mmkv

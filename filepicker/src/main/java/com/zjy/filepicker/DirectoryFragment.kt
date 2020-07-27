@@ -142,6 +142,6 @@ class DirectoryFragment : Fragment() {
             }
 
         private const val ARG_DIRECTORY_URI =
-            "com.example.android.directoryselection.ARG_DIRECTORY_URI"
+            "com.zjy.filepicker.DirectoryFragment.ARG_DIRECTORY_URI"
     }
 }
