@@ -10,7 +10,7 @@ val JSON = "{\n" +
         "    \"message\": \"\",\n" +
         "    \"data\": {\n" +
         "        \"userId\": \"1\",\n" +
-        "        \"realName\": \"郑家烨\",\n" +
+        "        \"realName\": \"zhengjy\",\n" +
         "        \"role\": 2,\n" +
         "        \"avatar\": \"https://zb-chat.oss-cn-shanghai.aliyuncs.com/chatList/picture/20191106/20191106190219445_1.png\",\n" +
         "        \"position\": \"Android开发\",\n" +

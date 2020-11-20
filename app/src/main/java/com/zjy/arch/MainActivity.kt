@@ -1,32 +1,20 @@
 package com.zjy.arch
 
-import android.content.ContentValues
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tencent.mars.Mars
-import com.tencent.mars.app.AppLogic
-import com.tencent.mars.stn.StnLogic
-import com.tencent.mars.xlog.Log
-import com.zjy.arch.task.SimpleTextTaskWrapper
 import com.zjy.architecture.Arch
 import com.zjy.architecture.ext.load
 import com.zjy.architecture.net.HttpResult
-import com.zjy.chat.MessageServiceProxy
-import com.zjy.chat.config.ServiceProfile
 import com.zjy.filepicker.FileBrowserActivity
+import com.zjy.zxing.CaptureCodeActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,15 +27,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val isEdit = AppPreference["app", true]
-        AppPreference["IS_LOGIN"] = "zhengjy"
-        AppPreference["IS_LOGIN"] = 128
-        val login = AppPreference.isLogin
-        if (AppPreference["IS_LOGIN", false] == AppPreference.isLogin) {
-            println("succeed!")
-            Log.i("MainActivity", "succeed!")
-        }
 
         imageView?.apply {
             load(imageUrl) {
@@ -105,7 +84,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ViewPager2Activity::class.java))
         }
         button4.setOnClickListener {
-
+//            startActivity(Intent(this, RecyclerActivity::class.java))
+            startActivity(Intent(this, CaptureCodeActivity::class.java))
         }
     }
 

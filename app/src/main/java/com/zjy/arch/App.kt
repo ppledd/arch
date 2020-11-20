@@ -1,7 +1,6 @@
 package com.zjy.arch
 
 import android.app.Application
-import com.tencent.mmkv.MMKV
 import com.zjy.architecture.Arch
 
 /**
@@ -13,7 +12,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Arch.init(this, true)
-        MMKV.initialize(this)
+        Arch.init(this, true, "", arrayOf())
     }
 }

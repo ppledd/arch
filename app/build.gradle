@@ -69,6 +69,7 @@ dependencies {
 
     implementation project(':filepicker')
     implementation project(':chat')
+    implementation project(':bar-code')
 
     implementation deps.androidx.constraint_layout
     implementation deps.androidx.viewpager2

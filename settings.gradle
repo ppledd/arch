@@ -1,3 +1,4 @@
+include ':bar-code'
 include ':filepicker'
 include ':chat'
 rootProject.name='Arch'
