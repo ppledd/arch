@@ -1,16 +1,13 @@
 package com.zjy.zxing
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.Result
 import com.zjy.zxing.qrcode.OnScanResultListener
 import kotlinx.android.synthetic.main.activity_capture_code.*
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * @author zhengjy
@@ -30,7 +27,8 @@ class CaptureCodeActivity : AppCompatActivity(), OnScanResultListener {
     override fun onSuccess(view: View, result: Result) {
         Toast.makeText(this, result.text, Toast.LENGTH_SHORT).show()
         scanView.postDelayed({
+            setResult(RESULT_OK, Intent().putExtra("result", result.text))
             finish()
-        }, 800)
+        }, 500)
     }
 }

@@ -31,36 +31,7 @@ class AutoZoomScanView @JvmOverloads constructor(
         module = CameraXModule(this)
     }
 
-    fun freeze(center: Point, radius: Float) {
-        iv_preview.post {
-            val paint = Paint().also {
-                it.color = Color.parseColor("#ffffff")
-                it.isAntiAlias = true
-            }
-            val origin = preView.bitmap ?: return@post
-            val bitmap = Bitmap.createBitmap(origin.width, origin.height, origin.config)
-            val canvas = Canvas(bitmap)
-            canvas.drawBitmap(origin, 0f, 0f, paint)
-            // 坐标轴需要顺时针旋转90度，同时旋转后的Y轴发生偏移
-            canvas.drawCircle(
-                measuredWidth - center.y.toFloat(),
-                center.x.toFloat() + module.getOffset(),
-                radius + 10,
-                paint
-            )
-            paint.color = Color.parseColor("#0066ff")
-            canvas.drawCircle(
-                measuredWidth - center.y.toFloat(),
-                center.x.toFloat() + module.getOffset(),
-                radius,
-                paint
-            )
-            iv_preview.setImageBitmap(bitmap)
-            iv_preview.visibility = View.VISIBLE
-        }
-    }
-
-    fun setImage(bitmap: Bitmap?) {
+    fun freeze(bitmap: Bitmap?) {
         iv_preview.post {
             iv_preview.setImageBitmap(bitmap)
             iv_preview.visibility = View.VISIBLE

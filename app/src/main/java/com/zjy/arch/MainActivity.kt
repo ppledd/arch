@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
         button4.setOnClickListener {
 //            startActivity(Intent(this, RecyclerActivity::class.java))
-            startActivity(Intent(this, CaptureCodeActivity::class.java))
+            startActivityForResult(Intent(this, CaptureCodeActivity::class.java), 888)
         }
     }
 
@@ -108,5 +108,17 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Arch.release()
 //        Mars.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 888) {
+                val str = data?.getStringExtra("result")
+                content.setText(str)
+                content.setSelection(0, str?.length ?: 0)
+                content.requestFocus()
+            }
+        }
     }
 }
