@@ -1,10 +1,8 @@
 package com.zjy.zxing.qrcode
 
-import android.annotation.SuppressLint
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import android.view.Surface
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -39,9 +37,9 @@ class CameraXModule(val view: AutoZoomScanView) {
     fun bindWithCameraX(lifecycleOwner: LifecycleOwner, callback: (Result) -> Unit) {
         mLifecycleOwner = lifecycleOwner
         val metrics = DisplayMetrics().also { view.display.getRealMetrics(it) }
-        Log.d(TAG, "Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
+        //Log.d(TAG, "Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
         val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
-        Log.i(TAG, "Preview aspect ratio: $screenAspectRatio")
+        //Log.i(TAG, "Preview aspect ratio: $screenAspectRatio")
         val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
         val cameraProviderFuture = ProcessCameraProvider.getInstance(view.context)
         cameraProviderFuture.addListener({
@@ -84,15 +82,8 @@ class CameraXModule(val view: AutoZoomScanView) {
         }, mainExecutor)
     }
 
-    /**
-     * 用于绘制识别到二维码标记的点
-     */
-    fun getOffset(): Float {
-        return if (resolutionHeight == 0) {
-            0f
-        } else {
-            (view.measuredHeight - resolutionHeight) / 2f
-        }
+    fun enableFlash(enable: Boolean) {
+        camera?.cameraControl?.enableTorch(enable)
     }
 
     fun setFocus(x: Float, y: Float) {
@@ -121,7 +112,6 @@ class CameraXModule(val view: AutoZoomScanView) {
         return RATIO_16_9_VALUE
     }
 
-    @SuppressLint("RestrictedApi")
     fun setZoomRatio(zoomRatio: Float) {
         if (zoomRatio > getMaxZoomRatio()) {
             return

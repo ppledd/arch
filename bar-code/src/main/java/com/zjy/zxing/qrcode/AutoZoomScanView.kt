@@ -56,6 +56,10 @@ class AutoZoomScanView @JvmOverloads constructor(
         this.listener = listener
     }
 
+    fun enableFlash(enable: Boolean) {
+        module.enableFlash(enable)
+    }
+
     private val gestureDetector =
         GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent?): Boolean {

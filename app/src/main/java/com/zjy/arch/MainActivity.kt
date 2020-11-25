@@ -12,7 +12,7 @@ import com.zjy.architecture.Arch
 import com.zjy.architecture.ext.load
 import com.zjy.architecture.net.HttpResult
 import com.zjy.filepicker.FileBrowserActivity
-import com.zjy.zxing.CaptureCodeActivity
+import com.zjy.zxing.ScanCodeActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
         button4.setOnClickListener {
 //            startActivity(Intent(this, RecyclerActivity::class.java))
-            startActivityForResult(Intent(this, CaptureCodeActivity::class.java), 888)
+            startActivityForResult(Intent(this, ScanCodeActivity::class.java), 888)
         }
     }
 

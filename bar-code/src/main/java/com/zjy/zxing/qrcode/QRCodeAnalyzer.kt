@@ -24,7 +24,7 @@ class QRCodeAnalyzer(
     private val callback: (Result) -> Unit
 ) : ImageAnalysis.Analyzer {
 
-    private val map = mapOf<DecodeHintType, Collection<BarcodeFormat>>(
+    private val map = mapOf<DecodeHintType, Any>(
         DecodeHintType.POSSIBLE_FORMATS to arrayListOf(BarcodeFormat.QR_CODE)
     )
     private val reader: MultiFormatReader = MultiFormatReader().apply { setHints(map) }
@@ -155,7 +155,7 @@ class QRCodeAnalyzer(
     }
 }
 
-private fun ByteBuffer.toByteArray(): ByteArray {
+fun ByteBuffer.toByteArray(): ByteArray {
     val data = ByteArray(rewind().remaining())
     get(data)
     return data

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         minSdkVersion build_versions.min_sdk
-        targetSdkVersion 29
+        targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
 
@@ -41,6 +41,7 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.core
     implementation deps.androidx.core_ktx
+    implementation deps.androidx.constraint_layout
 
     implementation  "com.google.zxing:core:3.3.3"
     def camerax_version = "1.0.0-beta12"
