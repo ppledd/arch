@@ -3,6 +3,7 @@ package com.zjy.architecture.base
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import com.zjy.architecture.fragment.FragmentHandleBackUtil
 import com.zjy.architecture.mvvm.Loading
 import com.zjy.architecture.widget.LoadingDialog
 
@@ -21,6 +22,10 @@ abstract class BaseActivity : AppCompatActivity(), Loadable {
     //自定义加载框
     open var dialog: LoadingDialog? = null
 
+    protected open fun setStatusBar() {
+
+    }
+
     protected abstract fun initView()
 
     protected abstract fun initData()
@@ -32,6 +37,7 @@ abstract class BaseActivity : AppCompatActivity(), Loadable {
         if (layoutId != 0) {
             setContentView(layoutId)
         }
+        setStatusBar()
         initView()
         initData()
         setEvent()
@@ -60,6 +66,19 @@ abstract class BaseActivity : AppCompatActivity(), Loadable {
         if (!isFinishing && dialog?.isShowing == true) {
             dialog?.cancel()
         }
+    }
+
+    override fun onBackPressed() {
+        if(!FragmentHandleBackUtil.handleBackPress(this)) {
+            onBackPressedSupport()
+        }
+    }
+
+    /**
+     * 子Activity需要继承这个方法
+     */
+    open fun onBackPressedSupport() {
+        super.onBackPressed()
     }
 }
 

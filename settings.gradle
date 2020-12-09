@@ -1,3 +1,4 @@
+include ':video'
 include ':bar-code'
 include ':filepicker'
 include ':chat'

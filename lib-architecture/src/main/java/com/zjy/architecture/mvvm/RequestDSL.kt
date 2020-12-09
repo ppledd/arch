@@ -1,8 +1,11 @@
 package com.zjy.architecture.mvvm
 
 import com.tencent.mars.xlog.Log
+import com.zjy.architecture.Arch
+import com.zjy.architecture.R
 import com.zjy.architecture.data.Result
 import com.zjy.architecture.ext.handleException
+import com.zjy.architecture.ext.toast
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,12 +17,13 @@ import kotlinx.coroutines.launch
  */
 abstract class RequestDSL<T> {
 
-    var onStart: (() -> Unit)? = null
-    var onRequest: (suspend CoroutineScope.() -> Result<T>)? = null
-    var onSuccess: ((T) -> Unit)? = null
-    var onFail: ((Throwable) -> Unit)? = null
-    var onComplete: (() -> Unit)? = null
+    internal var onStart: (() -> Unit)? = null
+    internal var onRequest: (suspend CoroutineScope.() -> Result<T>)? = null
+    internal var onSuccess: ((T) -> Unit)? = null
+    internal var onFail: ((Throwable) -> Unit)? = null
+    internal var onComplete: (() -> Unit)? = null
 
+    @Deprecated("如果需要进行初始化操作直接进行即可，无需调用这个方法")
     fun onStart(block: () -> Unit) {
         this.onStart = block
     }
@@ -64,7 +68,7 @@ fun <T> LoadingViewModel.request(
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e("LoadingViewModel", "", e)
+                    Log.e("LoadingViewModel", e.message)
                     if (e is CancellationException) {
                         // do nothing
                     } else {
@@ -82,5 +86,15 @@ fun <T> LoadingViewModel.request(
 }
 
 private fun processError(onError: ((Throwable) -> Unit)? = null, e: Throwable) {
+    GlobalErrorHandler.handler?.invoke(e)
     onError?.invoke(e)
+}
+
+/**
+ * 可以在这里定义全局请求错误处理方式
+ */
+object GlobalErrorHandler {
+    var handler: ((Throwable) -> Unit)? = {
+        Arch.context.toast(it.message ?: Arch.context.getString(R.string.arch_error_unknown1))
+    }
 }

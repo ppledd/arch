@@ -1,12 +1,15 @@
 package com.zjy.architecture.ext
 
-import com.bumptech.glide.load.HttpException
-import com.zjy.architecture.data.Result
+import com.google.gson.JsonSyntaxException
+import com.zjy.architecture.data.*
+import com.zjy.architecture.exception.ApiException
 import com.zjy.architecture.net.HttpResult
+import kotlinx.coroutines.CancellationException
+import retrofit2.HttpException
 import java.io.IOException
 import java.lang.ClassCastException
-import java.lang.RuntimeException
 import java.net.MalformedURLException
+import java.net.UnknownHostException
 import java.security.cert.CertificateException
 import javax.net.ssl.SSLHandshakeException
 
@@ -23,28 +26,43 @@ suspend fun <T> apiCall(code: Int = SUCCESS_CODE, call: suspend () -> HttpResult
             if (it.code == code) {
                 Result.Success(it.data)
             } else {
-                Result.Error(handleException(Exception(it.message)))
+                Result.Error(ApiException(it.message))
             }
         }
     } catch (e: Exception) {
-        Result.Error(handleException(e))
+        if (e is CancellationException) {
+            // do nothing
+            throw e
+        } else {
+            Result.Error(handleException(e))
+        }
     }
 }
 
-fun handleException(t: Exception?): Exception {
+fun handleException(t: Exception?): ApiException {
     return if (t == null) {
-        RuntimeException("unknown error")
+        ApiException(UNKNOWN_ERROR)
     } else if (t is CertificateException || t is SSLHandshakeException) {
-        t
-    } else if (t is MalformedURLException) {
-        t
+        ApiException(CERT_ERROR)
+    } else if (t is MalformedURLException || t is UnknownHostException) {
+        ApiException(HOST_ERROR)
     } else if (t is HttpException) {
-        t
+        if (t.code() / 100 == 5) {
+            // 状态码5XX则为服务器错误
+            ApiException(SERVER_ERROR)
+        } else {
+            // 其他状态码统一报请求错误
+            ApiException(REQUEST_ERROR)
+        }
     } else if (t is IOException) {
-        t
+        ApiException(CONNECTION_ERROR)
+    } else if (t is JsonSyntaxException) {
+        ApiException(PARSE_ERROR)
     } else if (t is ClassCastException) {
+        ApiException(STRUCTURE_ERROR)
+    } else if (t is ApiException) {
         t
     } else {
-        t
+        ApiException(t)
     }
 }

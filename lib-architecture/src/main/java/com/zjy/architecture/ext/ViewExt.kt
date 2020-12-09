@@ -1,8 +1,13 @@
 package com.zjy.architecture.ext
 
+import android.graphics.Paint
 import android.view.View
 import android.widget.Checkable
+import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
+import com.zjy.architecture.base.Loadable
+import com.zjy.architecture.mvvm.Loading
 
 /**
  * @author zhengjy
@@ -39,6 +44,26 @@ inline fun View.gone() {
 }
 
 /**
+ * 设置中粗体
+ */
+fun TextView.mediumBold() {
+    paint.apply {
+        style = Paint.Style.FILL_AND_STROKE
+        strokeWidth = 1f
+    }
+}
+
+fun TextView.mediumText(text: CharSequence) {
+    mediumBold()
+    setText(text)
+}
+
+fun TextView.mediumText(res: Int) {
+    mediumBold()
+    setText(res)
+}
+
+/**
  * Reverse the view's visibility
  */
 inline fun View.reverseVisibility(needInvisible: Boolean = true) {
@@ -67,6 +92,17 @@ fun <T : View> T.singleClick(time: Long = 500L, listener: View.OnClickListener) 
         if (currentTimeMillis - lastClickTime > time || this is Checkable) {
             lastClickTime = currentTimeMillis
             listener.onClick(this)
+        }
+    }
+}
+
+fun DialogFragment.setupLoading(loading: Loading) {
+    val ctx = activity
+    if (ctx is Loadable?) {
+        if (loading.loading) {
+            ctx?.loading(loading.cancelable)
+        } else {
+            ctx?.dismiss()
         }
     }
 }

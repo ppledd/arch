@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/filepicker" />
             <option value="$PROJECT_DIR$/lib-architecture" />
+            <option value="$PROJECT_DIR$/video" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

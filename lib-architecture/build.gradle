@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: '/versions.gradle'
 
@@ -15,6 +14,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
 
     buildTypes {
@@ -53,6 +56,7 @@ dependencies {
     api deps.androidx.core_ktx
     api deps.androidx.activity_ktx
     api deps.androidx.fragment_ktx
+    api deps.androidx.recyclerview
     api deps.androidx.documentfile
 
     api deps.lifecycle.viewmodel_ktx
@@ -66,16 +70,18 @@ dependencies {
     api deps.koin.android_fragment
     api deps.koin.android_ext
 
+    api deps.okhttp.okhttp3
+    api deps.okhttp.logging_interceptor
+    api deps.retrofit.runtime
+    api deps.retrofit.gson
+    api deps.retrofit_url
+
     api deps.glide.runtime
     api deps.brvah
     api deps.gson
     api deps.background
+    api deps.arouter.api
 
     api deps.mars.xlog
-    api deps.mmkv
 
-//    api deps.moshi
-//    api deps.moshi_kotlin
-//    kapt deps.moshi_codegen
-//    annotationProcessor deps.moshi_codegen
 }

@@ -1,7 +1,7 @@
 ext.deps = [:]
 def deps = [:]
 def versions = [:]
-versions.android_gradle_plugin = '4.0.0'
+versions.android_gradle_plugin = '4.1.1'
 versions.protobuf_gradle_plugin = '0.8.10'
 
 versions.constraint_layout = "1.1.3"
@@ -17,8 +17,8 @@ versions.viewpager2 = "1.0.0"
 versions.legacy = "1.0.0"
 versions.support = "1.1.0"
 
-versions.kotlin = "1.3.72"
-versions.coroutines = "1.3.5"
+versions.kotlin = "1.4.20"
+versions.coroutines = "1.3.9"
 
 versions.lifecycle = "2.2.0"
 versions.navigation = "2.2.0"
@@ -26,8 +26,8 @@ versions.room = "2.2.5"
 versions.wcdb = "1.0.8"
 versions.work = "2.3.4"
 
-versions.koin = "2.1.5"
-versions.glide = "4.8.0"
+versions.koin = "2.2.0-alpha-1"
+versions.glide = "4.11.0"
 versions.arouter = "1.4.0"
 versions.arouterc = "1.2.1"
 versions.okhttp = "3.9.0"
@@ -38,9 +38,13 @@ versions.moshi = "1.9.3"
 versions.mmkv = "1.2.1"
 versions.mars = "1.2.3"
 versions.proto = "3.11.0"
-versions.permissionx = "1.3.0"
+versions.permissionx = "1.4.0"
 versions.dsbridge = "3.0-SNAPSHOT"
 versions.background = "1.6.5"
+versions.retrofit_url = "1.4.0"
+versions.flyco = "2.1.2@aar"
+versions.flexbox = "2.0.1"
+versions.zxing_lite = "1.1.9-androidx"
 
 def build_versions = [:]
 build_versions.min_sdk = 21
@@ -100,6 +104,7 @@ def lifecycle = [:]
 lifecycle.viewmodel_ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
 lifecycle.livedata_ktx = "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
 lifecycle.runtime = "androidx.lifecycle:lifecycle-runtime:$versions.lifecycle"
+lifecycle.runtime_ktx = "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
 deps.lifecycle = lifecycle
 
 def work = [:]
@@ -177,6 +182,14 @@ deps.permissionx = "com.permissionx.guolindev:permissionx:$versions.permissionx"
 deps.dsbridge = "com.github.wendux:DSBridge-Android:$versions.dsbridge"
 // Shape Drawable框架
 deps.background = "com.noober.background:core:$versions.background"
+// retrofit动态域名切换框架
+deps.retrofit_url = "me.jessyan:retrofit-url-manager:$versions.retrofit_url"
+// 自定义TabLayout
+deps.flyco = "com.flyco.tablayout:FlycoTabLayout_Lib:$versions.flyco"
+// FlexBox
+deps.flexbox = "com.google.android:flexbox:$versions.flexbox"
+// 集成Zxing的二维码库
+deps.zxing_lite = "com.king.zxing:zxing-lite:$versions.zxing_lite"
 
 
 
