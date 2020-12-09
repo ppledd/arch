@@ -1,0 +1,3 @@
+[submodule "lib-arch"]
+	path = lib-arch
+	url = https://github.com/ZJYZJY/lib-arch.git
