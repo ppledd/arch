@@ -3,7 +3,7 @@ apply plugin: 'koin'
 
 buildscript {
     ext {
-        versions = "${rootDir}/lib-arch/versions.gradle"
+        versions = "${rootDir}/arch/versions.gradle"
         kotlin_version = '1.3.72'
     }
     apply from: versions

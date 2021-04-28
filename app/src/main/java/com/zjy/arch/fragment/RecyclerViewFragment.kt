@@ -30,7 +30,7 @@ class RecyclerViewFragment : BaseFragment() {
     override val layoutId: Int
         get() = R.layout.fragment_recyclerview
 
-    override fun initView(view: View?, savedInstanceState: Bundle?) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         rv_data.layoutManager = LinearLayoutManager(requireContext())
         rv_data.adapter = object : BaseQuickAdapter<String, MyViewHolder>(
             R.layout.item_my_recyclerview, data

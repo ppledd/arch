@@ -36,7 +36,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    api(project(':lib-arch')) {
+    api(project(':arch')) {
         exclude group: 'com.tencent.mars', module: 'mars-xlog'
     }
     api deps.mars.core
