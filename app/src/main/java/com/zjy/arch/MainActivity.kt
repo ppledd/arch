@@ -1,7 +1,13 @@
 package com.zjy.arch
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Outline
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewOutlineProvider
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
@@ -9,6 +15,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zjy.architecture.Arch
+import com.zjy.architecture.ext.dp
+import com.zjy.architecture.ext.gone
 import com.zjy.architecture.ext.load
 import com.zjy.architecture.net.HttpResult
 import com.zjy.filepicker.FileBrowserActivity
@@ -29,7 +37,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        fl_top.elevation = 10.dp.toFloat()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            fl_top.outlineSpotShadowColor = Color.parseColor("#FF0000")
+            fl_top.outlineAmbientShadowColor = Color.parseColor("#FF0000")
+        }
+        fl_top.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.alpha = 1f
+                outline.setRoundRect(0, 0, view.width, view.height, 20.dp.toFloat())
+            }
+        }
+        fl_top.clipToOutline = true
+
+
         imageView?.apply {
+            gone()
             load(imageUrl) {
                 apply(RequestOptions().placeholder(R.mipmap.ic_launcher))
             }
@@ -75,6 +98,17 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //        }
+        button.setOnTouchListener { v, event ->
+            when(event?.action) {
+                MotionEvent.ACTION_DOWN->{
+                    v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                }
+                MotionEvent.ACTION_UP ->{
+                    v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY_RELEASE)
+                }
+            }
+            return@setOnTouchListener true
+        }
         button.setOnClickListener {
 
         }

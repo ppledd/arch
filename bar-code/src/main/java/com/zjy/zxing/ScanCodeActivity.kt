@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -46,10 +47,11 @@ class ScanCodeActivity : AppCompatActivity(), OnScanResultListener, View.OnClick
 
     override fun onSuccess(view: View, result: Result) {
         Toast.makeText(this, result.text, Toast.LENGTH_SHORT).show()
+        scanView.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
         scanView.postDelayed({
             setResult(RESULT_OK, Intent().putExtra("result", result.text))
             finish()
-        }, 500)
+        }, 800)
     }
 
     override fun onClick(v: View?) {

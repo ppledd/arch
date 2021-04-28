@@ -59,15 +59,11 @@ class DirectoryViewModel(application: Application) : AndroidViewModel(applicatio
         // It's much nicer when the documents are sorted by something, so we'll sort the documents
         // we got by name. Unfortunate there may be quite a few documents, and sorting can take
         // some time, so we'll take advantage of coroutines to take this work off the main thread.
-        viewModelScope.launch {
-            val childDocuments = documentsTree.listFiles().toCachingList()
-            val sortedDocuments = withContext(Dispatchers.IO) {
-                childDocuments.asSequence().filter {
-                    it.name?.startsWith(".") == false
-                }.toMutableList().apply {
-                    sortWith(NameComparator())
-                }
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val childDocuments = documentsTree.listFiles().toCachingList(getApplication())
+            val sortedDocuments = childDocuments.asSequence().filter {
+                it.name?.startsWith(".") == false
+            }.sortedWith(NameComparator()).toMutableList()
             cancelLoadingView = true
             _loading.postValue(false)
             _documents.postValue(sortedDocuments)

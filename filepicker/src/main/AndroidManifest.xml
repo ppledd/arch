@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zjy.filepicker">
 
-    <application>
+    <application
+        android:requestLegacyExternalStorage="true">
 
         <activity
             android:name=".FileBrowserActivity"

@@ -17,6 +17,10 @@
 package com.zjy.filepicker
 
 import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
+import android.provider.DocumentsContract
+import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 
 /**
@@ -29,14 +33,9 @@ import androidx.documentfile.provider.DocumentFile
  * To improve performance in the app, where we want to be able to sort a list of [DocumentFile]s
  * by name, we wrap it like this so the value is only looked up once.
  */
-data class CachingDocumentFile(private val documentFile: DocumentFile) {
-    val name: String? by lazy { documentFile.name }
-    val type: String? by lazy { documentFile.type }
-
-    val isDirectory: Boolean by lazy { documentFile.isDirectory }
+data class CachingDocumentFile(val name: String?, val type: String?, val size: Long, val uri: Uri) {
+    val isDirectory: Boolean get() = type == null
     val ext: String by lazy { getExtension(name) }
-
-    val uri get() = documentFile.uri
 }
 
 private fun getExtension(pathOrUrl: String?): String {
@@ -51,10 +50,36 @@ private fun getExtension(pathOrUrl: String?): String {
     }
 }
 
-fun Array<DocumentFile>.toCachingList(): List<CachingDocumentFile> {
+fun Array<DocumentFile>.toCachingList(context: Context): List<CachingDocumentFile> {
     val list = mutableListOf<CachingDocumentFile>()
     for (document in this) {
-        list += CachingDocumentFile(document)
+        document.apply {
+            val resolver = context.contentResolver
+            try {
+                resolver.query(
+                    uri,
+                    arrayOf(
+                        DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                        DocumentsContract.Document.COLUMN_MIME_TYPE,
+                        DocumentsContract.Document.COLUMN_SIZE,
+                    ), null, null, null
+                )?.use {
+                    if (it.moveToFirst()) {
+                        val name = it.getString(0)
+                        val rawType = it.getString(1)
+                        val length = it.getLong(2)
+                        list += CachingDocumentFile(
+                            name,
+                             if (DocumentsContract.Document.MIME_TYPE_DIR == rawType) null else rawType,
+                            length,
+                            uri
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w("CachingDocumentFile", "Failed query: $e")
+            }
+        }
     }
     return list
 }

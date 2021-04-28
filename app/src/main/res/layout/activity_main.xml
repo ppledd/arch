@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".MainActivity">
 
     <TextView
@@ -82,5 +83,15 @@
         app:layout_constraintEnd_toEndOf="@+id/button4"
         app:layout_constraintStart_toStartOf="@+id/button4"
         app:layout_constraintTop_toBottomOf="@+id/button4" />
+
+    <FrameLayout
+        android:id="@+id/fl_top"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
