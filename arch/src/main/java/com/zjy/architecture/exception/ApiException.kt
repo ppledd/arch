@@ -12,7 +12,7 @@ import java.io.IOException
  */
 class ApiException : IOException {
 
-    private var errorCode: Int = IGNORE_ERROR
+    private var errorCode: Int = UNKNOWN_ERROR
     val code: Int
         get() = errorCode
 
