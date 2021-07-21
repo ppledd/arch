@@ -21,7 +21,7 @@ import com.zjy.architecture.ext.load
 import com.zjy.architecture.net.HttpResult
 import com.zjy.filepicker.FileBrowserActivity
 import com.zjy.video.VideoActivity
-import com.zjy.zxing.ScanCodeActivity
+import com.zjy.barcode.ScanCodeActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 

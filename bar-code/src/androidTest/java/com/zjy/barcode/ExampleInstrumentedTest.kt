@@ -1,4 +1,4 @@
-package com.zjy.zxing
+package com.zjy.barcode
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

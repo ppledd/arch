@@ -1,4 +1,4 @@
-package com.zjy.zxing
+package com.zjy.barcode
 
 import org.junit.Test
 

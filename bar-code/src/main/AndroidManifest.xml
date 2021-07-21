@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zjy.zxing">
+    package="com.zjy.barcode">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -14,7 +14,7 @@
             android:name="android.notch_support"
             android:value="true" />
         <activity
-            android:name=".ScanCodeActivity"
+            android:name="com.zjy.barcode.ScanCodeActivity"
             android:theme="@style/Theme.QR.Scanner" />
     </application>
 

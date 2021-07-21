@@ -1,4 +1,4 @@
-package com.zjy.zxing
+package com.zjy.barcode
 
 import android.Manifest
 import android.content.Intent
@@ -12,9 +12,9 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.zxing.Result
-import com.zjy.zxing.qrcode.DecodeThread
-import com.zjy.zxing.qrcode.OnScanResultListener
+import com.google.mlkit.vision.barcode.Barcode
+import com.zjy.barcode.decoder.MLDecodeThread
+import com.zjy.barcode.qrcode.OnScanResultListener
 import kotlinx.android.synthetic.main.activity_scan_code.*
 import java.io.FileInputStream
 
@@ -45,11 +45,11 @@ class ScanCodeActivity : AppCompatActivity(), OnScanResultListener, View.OnClick
         }
     }
 
-    override fun onSuccess(view: View, result: Result) {
-        Toast.makeText(this, result.text, Toast.LENGTH_SHORT).show()
+    override fun onSuccess(view: View, result: Barcode) {
+        Toast.makeText(this, result.displayValue, Toast.LENGTH_SHORT).show()
         scanView.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
         scanView.postDelayed({
-            setResult(RESULT_OK, Intent().putExtra("result", result.text))
+            setResult(RESULT_OK, Intent().putExtra("result", result.displayValue))
             finish()
         }, 800)
     }
@@ -96,9 +96,9 @@ class ScanCodeActivity : AppCompatActivity(), OnScanResultListener, View.OnClick
                 cursor.close()
                 val picture = decodeBitmapFromPath2(path)
                 picture?.also { bitmap ->
-                    DecodeThread(bitmap) {
+                    MLDecodeThread(bitmap) {
                         if (it != null) {
-                            setResult(RESULT_OK, Intent().putExtra("result", it.text))
+                            setResult(RESULT_OK, Intent().putExtra("result", it.displayValue))
                             finish()
                         } else {
                             Toast.makeText(this, "无法识别图片", Toast.LENGTH_SHORT).show()

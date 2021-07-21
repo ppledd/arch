@@ -1,4 +1,4 @@
-package com.zjy.zxing.qrcode
+package com.zjy.barcode.qrcode
 
 import android.util.DisplayMetrics
 import android.util.Log
@@ -7,7 +7,9 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.google.zxing.Result
+import com.google.mlkit.vision.barcode.Barcode
+import com.zjy.barcode.analyzer.MLQRCodeAnalyzer
+import com.zjy.barcode.view.AutoZoomScanView
 import kotlinx.android.synthetic.main.view_scan_auto_zoom.view.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -26,7 +28,7 @@ class CameraXModule(val view: AutoZoomScanView) {
     private var camera: Camera? = null
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
     private lateinit var preview: Preview
-    private lateinit var qrCodeAnalyzer: QRCodeAnalyzer
+    private lateinit var qrCodeAnalyzer: ImageAnalysis.Analyzer
     private lateinit var qrAnalysis: ImageAnalysis
 
     private val cameraExecutor = Executors.newSingleThreadExecutor()
@@ -34,7 +36,7 @@ class CameraXModule(val view: AutoZoomScanView) {
 
     private var resolutionHeight = 0
 
-    fun bindWithCameraX(lifecycleOwner: LifecycleOwner, callback: (Result) -> Unit) {
+    fun bindWithCameraX(lifecycleOwner: LifecycleOwner, callback: (Barcode) -> Unit) {
         mLifecycleOwner = lifecycleOwner
         val metrics = DisplayMetrics().also { view.display.getRealMetrics(it) }
         //Log.d(TAG, "Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
@@ -52,7 +54,7 @@ class CameraXModule(val view: AutoZoomScanView) {
                 .build()
             preview.setSurfaceProvider(view.preView.surfaceProvider)
 
-            qrCodeAnalyzer = QRCodeAnalyzer(this) {
+            qrCodeAnalyzer = MLQRCodeAnalyzer(this) {
                 mainExecutor.execute {
                     callback(it)
                 }
@@ -60,6 +62,7 @@ class CameraXModule(val view: AutoZoomScanView) {
             // ImageAnalysis
             qrAnalysis = ImageAnalysis.Builder()
                 .setTargetResolution(Size(width, height))
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, qrCodeAnalyzer)
