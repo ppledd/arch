@@ -10,6 +10,9 @@ import android.content.Intent
  * Description:
  */
 class Huawei : Rom {
+    override fun canShowViewOnLockScreen(context: Context): Boolean {
+        TODO("Not yet implemented")
+    }
 
     override fun isBackgroundStartAllowed(context: Context): Boolean {
         TODO("Not yet implemented")

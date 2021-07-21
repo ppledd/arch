@@ -12,6 +12,20 @@ import android.os.Build
  * Description:
  */
 class Vivo : Rom {
+    override fun canShowViewOnLockScreen(context: Context): Boolean {
+        val uri = Uri.parse("content://com.vivo.permissionmanager.provider.permission/control_locked_screen_action")
+        val selection = "pkgname = ?"
+        val selectionArgs = arrayOf(context.packageName)
+        return context.contentResolver.query(uri, null, selection, selectionArgs, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val currentMode = cursor.getInt(cursor.getColumnIndex("currentstate"));
+                currentMode == 1
+            } else {
+                true
+            }
+        } ?: true
+    }
+
     /**
      * 判断Vivo后台弹出界面状态， 1无权限，0有权限
      * @param context context

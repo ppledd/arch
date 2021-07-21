@@ -12,6 +12,10 @@ import android.provider.Settings
  * Description:
  */
 class Oppo : Rom {
+    override fun canShowViewOnLockScreen(context: Context): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun isBackgroundStartAllowed(context: Context): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return Settings.canDrawOverlays(context)

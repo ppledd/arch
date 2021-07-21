@@ -49,6 +49,14 @@ object RomUtils : Rom {
         map[manufacturer] = rom
     }
 
+    override fun canShowViewOnLockScreen(context: Context): Boolean {
+        return try {
+            rom.canShowViewOnLockScreen(context)
+        } catch (e: Exception) {
+            default.canShowViewOnLockScreen(context)
+        }
+    }
+
     override fun isBackgroundStartAllowed(context: Context): Boolean {
         return try {
             rom.isBackgroundStartAllowed(context)

@@ -13,6 +13,11 @@ import android.provider.Settings
 interface Rom {
 
     /**
+     * 是否允许锁屏显示界面
+     */
+    fun canShowViewOnLockScreen(context: Context): Boolean
+
+    /**
      * 是否允许后台弹出界面
      */
     fun isBackgroundStartAllowed(context: Context): Boolean
@@ -23,6 +28,10 @@ interface Rom {
     fun openPermissionSetting(context: Context)
 
     class DefaultRom : Rom {
+        override fun canShowViewOnLockScreen(context: Context): Boolean {
+            return true
+        }
+
         override fun isBackgroundStartAllowed(context: Context): Boolean {
             return true
         }
