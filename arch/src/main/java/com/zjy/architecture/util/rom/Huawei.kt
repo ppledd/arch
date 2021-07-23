@@ -9,14 +9,7 @@ import android.content.Intent
  * @since 2021/07/21
  * Description:
  */
-class Huawei : Rom {
-    override fun canShowViewOnLockScreen(context: Context): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun isBackgroundStartAllowed(context: Context): Boolean {
-        TODO("Not yet implemented")
-    }
+class Huawei : Rom.DefaultRom() {
 
     override fun openPermissionSetting(context: Context) {
         val intent = Intent()

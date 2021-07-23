@@ -11,7 +11,8 @@ import android.os.Build
  * @since 2021/07/21
  * Description:
  */
-class Vivo : Rom {
+class Vivo : Rom.DefaultRom() {
+
     override fun canShowViewOnLockScreen(context: Context): Boolean {
         val uri = Uri.parse("content://com.vivo.permissionmanager.provider.permission/control_locked_screen_action")
         val selection = "pkgname = ?"

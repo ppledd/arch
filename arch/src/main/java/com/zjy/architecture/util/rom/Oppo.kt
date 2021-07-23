@@ -11,10 +11,7 @@ import android.provider.Settings
  * @since 2021/07/21
  * Description:
  */
-class Oppo : Rom {
-    override fun canShowViewOnLockScreen(context: Context): Boolean {
-        TODO("Not yet implemented")
-    }
+class Oppo : Rom.DefaultRom() {
 
     override fun isBackgroundStartAllowed(context: Context): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

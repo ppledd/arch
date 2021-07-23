@@ -72,4 +72,12 @@ object RomUtils : Rom {
             default.openPermissionSetting(context)
         }
     }
+
+    override fun openNotificationSetting(context: Context, channelId: String) {
+        try {
+            rom.openNotificationSetting(context, channelId)
+        } catch (e: Exception) {
+            default.openNotificationSetting(context, channelId)
+        }
+    }
 }

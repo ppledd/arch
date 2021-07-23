@@ -4,6 +4,7 @@ import android.app.AppOpsManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Process
 import java.lang.reflect.Method
 
 /**
@@ -11,7 +12,7 @@ import java.lang.reflect.Method
  * @since 2021/07/21
  * Description:
  */
-class Xiaomi : Rom {
+class Xiaomi : Rom.DefaultRom() {
 
     companion object {
         /**
@@ -27,14 +28,13 @@ class Xiaomi : Rom {
     override fun canShowViewOnLockScreen(context: Context): Boolean {
         val ops = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         try {
-            val op = SHOW_WHEN_LOCK
             val method: Method = ops.javaClass.getMethod(
                 "checkOpNoThrow",
                 Int::class.javaPrimitiveType,
                 Int::class.javaPrimitiveType,
                 String::class.java
             )
-            val result = method.invoke(ops, op, android.os.Process.myUid(), context.packageName) as Int
+            val result = method.invoke(ops, SHOW_WHEN_LOCK, Process.myUid(), context.packageName) as Int
             return result == AppOpsManager.MODE_ALLOWED
         } catch (e: Exception) {
             e.printStackTrace()
@@ -45,14 +45,13 @@ class Xiaomi : Rom {
     override fun isBackgroundStartAllowed(context: Context): Boolean {
         val ops = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         try {
-            val op = BACKGROUND_START
             val method: Method = ops.javaClass.getMethod(
                 "checkOpNoThrow",
                 Int::class.javaPrimitiveType,
                 Int::class.javaPrimitiveType,
                 String::class.java
             )
-            val result = method.invoke(ops, op, android.os.Process.myUid(), context.packageName) as Int
+            val result = method.invoke(ops, BACKGROUND_START, Process.myUid(), context.packageName) as Int
             return result == AppOpsManager.MODE_ALLOWED
         } catch (e: Exception) {
             e.printStackTrace()
