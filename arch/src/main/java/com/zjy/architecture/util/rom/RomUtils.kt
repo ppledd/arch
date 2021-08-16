@@ -26,6 +26,7 @@ object RomUtils : Rom {
     private val map = mutableMapOf<String, Rom>(
         "xiaomi" to Xiaomi(),
         "huawei" to Huawei(),
+        "honor" to Honor(),
         "oppo" to Oppo(),
         "vivo" to Vivo(),
     )

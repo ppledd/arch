@@ -53,11 +53,11 @@ object ActivityUtils {
 
     private fun activityStart() {
         if (isBackground) {
+            activityCount.incrementAndGet()
             for (l in listeners) {
                 l.onResumeApp()
             }
         }
-        activityCount.incrementAndGet()
     }
 
     private fun activityStop() {

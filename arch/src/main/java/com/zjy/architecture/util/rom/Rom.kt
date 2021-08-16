@@ -75,7 +75,7 @@ interface Rom {
         /**
          * 打开App设置页面
          */
-        private fun openAppSettings(context: Context) {
+        protected fun openAppSettings(context: Context) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             intent.data = Uri.fromParts("package", context.packageName, null)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

@@ -9,7 +9,7 @@ import android.content.Intent
  * @since 2021/07/21
  * Description:
  */
-class Huawei : Rom.DefaultRom() {
+open class Huawei : Rom.DefaultRom() {
 
     override fun openPermissionSetting(context: Context) {
         val intent = Intent()
@@ -20,5 +20,9 @@ class Huawei : Rom.DefaultRom() {
             "com.huawei.permissionmanager.ui.MainActivity"
         )
         context.startActivity(intent)
+    }
+
+    override fun openNotificationSetting(context: Context, channelId: String) {
+        openAppSettings(context)
     }
 }
