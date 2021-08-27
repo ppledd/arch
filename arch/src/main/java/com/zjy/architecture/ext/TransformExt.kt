@@ -35,8 +35,12 @@ fun ByteArray.bytes2Hex(): String {
  * hex string to byte array
  */
 fun String.hex2Bytes(): ByteArray {
-    var len = length
-    var hexString = this
+    var hexString = if (this.startsWith("0x") || this.startsWith("0X")) {
+        this.substring(2, this.length)
+    } else {
+        this
+    }
+    var len = hexString.length
     if (len % 2 != 0) {
         hexString = "0$hexString"
         len++
