@@ -253,7 +253,11 @@ object FileUtils {
                 put(MediaStore.MediaColumns.DATA, "$path/$fileName")
             }
         }
-        val external = MediaStore.Downloads.EXTERNAL_CONTENT_URI
+        val external = if (isAndroidQ) {
+            MediaStore.Downloads.EXTERNAL_CONTENT_URI
+        } else {
+            Uri.parse("content://media/external/downloads")
+        }
         //insertUri表示文件保存的uri路径
         val insertUri = resolver.insert(external, values)
         if (insertUri != null) {
