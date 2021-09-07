@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.Environment
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.annotation.WorkerThread
 import androidx.core.content.FileProvider
@@ -220,7 +222,7 @@ object FileUtils {
         return resolver.insert(external, values)
     }
 
-    @SuppressLint("InlinedApi")
+    @SuppressLint("NewApi")
     suspend fun saveToDownloads(
         context: Context,
         media: InputStream?,
@@ -232,6 +234,23 @@ object FileUtils {
         if (folder.isEmpty() || media == null) {
             return@withContext null
         }
+
+        return@withContext if (isAndroidQ) {
+            saveToDownloadAboveQ(context, media, folder, fileName, mimeType, progressCallback)
+        } else {
+            saveToDownloadBelowQ(context, media, folder, fileName, mimeType, progressCallback)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private suspend fun saveToDownloadAboveQ(
+        context: Context,
+        media: InputStream,
+        folder: String,
+        fileName: String,
+        mimeType: String,
+        progressCallback: ((Float) -> Unit)? = null
+    ): LocalFile? {
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             .absolutePath + "/" + folder
         val resolver = context.contentResolver
@@ -243,32 +262,14 @@ object FileUtils {
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
             //注意：MediaStore.MediaColumns.RELATIVE_PATH需要targetSdkVersion=29,
             //故该方法只可在Android10的手机上执行
-            if (isAndroidQ) {
-                put(
-                    MediaStore.MediaColumns.RELATIVE_PATH,
-                    "${Environment.DIRECTORY_DOWNLOADS}/$folder"
-                )
-                put(MediaStore.MediaColumns.IS_PENDING, 1)
-            } else {
-                put(MediaStore.MediaColumns.DATA, "$path/$fileName")
-            }
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/$folder")
+            put(MediaStore.MediaColumns.IS_PENDING, 1)
         }
-        val external = if (isAndroidQ) {
-            MediaStore.Downloads.EXTERNAL_CONTENT_URI
-        } else {
-            Uri.parse("content://media/external/downloads")
-        }
+        val external = MediaStore.Downloads.EXTERNAL_CONTENT_URI
         //insertUri表示文件保存的uri路径
         val insertUri = resolver.insert(external, values)
         if (insertUri != null) {
             try {
-                if (!isAndroidQ) {
-                    // android10以下可能需要手动创建文件夹
-                    val dir = File(path)
-                    if (!dir.exists()) {
-                        dir.mkdirs()
-                    }
-                }
                 val output = resolver.openOutputStream(insertUri)
                 // 将数据流写入insertUri
                 output?.use { outputStream ->
@@ -291,16 +292,56 @@ object FileUtils {
                         outputStream.flush()
                     }
                 }
-                if (isAndroidQ) {
-                    values.clear()
-                    values.put(MediaStore.MediaColumns.IS_PENDING, 0)
-                    resolver.update(insertUri, values, null, null)
-                }
+                values.clear()
+                values.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                resolver.update(insertUri, values, null, null)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
-        return@withContext LocalFile("${path}/${fileName}", insertUri)
+        return LocalFile("${path}/${fileName}", insertUri)
+    }
+
+    private suspend fun saveToDownloadBelowQ(
+        context: Context,
+        media: InputStream,
+        folder: String,
+        fileName: String,
+        mimeType: String,
+        progressCallback: ((Float) -> Unit)? = null
+    ): LocalFile? {
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            .absolutePath + "/" + folder
+        // android10以下可能需要手动创建文件夹
+        val dir = File(path)
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+        val file = File(dir, fileName)
+        val output = FileOutputStream(file)
+        // 将数据流写入insertUri
+        output.use { outputStream ->
+            media.use {
+                var bytesCopied: Long = 0
+                var oldProgress = 0
+                val total = it.available()
+                val buffer = ByteArray(8 * 1024)
+                var bytes = it.read(buffer)
+                while (bytes >= 0) {
+                    outputStream.write(buffer, 0, bytes)
+                    bytesCopied += bytes
+                    bytes = it.read(buffer)
+                    val progress = (bytesCopied * 1.0f / total * 100).toInt()
+                    if (progress != oldProgress) {
+                        oldProgress = progress
+                        progressCallback?.invoke(bytesCopied * 1.0f / total)
+                    }
+                }
+                outputStream.flush()
+            }
+        }
+        val insertUri = Uri.parse("file://${path}/${fileName}")
+        return LocalFile("${path}/${fileName}", insertUri)
     }
 }
 
