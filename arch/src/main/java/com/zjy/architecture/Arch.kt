@@ -76,7 +76,7 @@ object Arch {
         openXLog(context, debug, encryptKey)
         ActivityUtils.registerActivityLifecycleCallbacks(context as Application)
         // 初始化ARouter
-        if (BuildConfig.DEBUG) {
+        if (debug) {
             ARouter.openLog()
             ARouter.openDebug()
         }
