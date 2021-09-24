@@ -47,21 +47,23 @@ object FileUtils {
     @WorkerThread
     fun copyToCacheFile(context: Context, uri: Uri?): File? {
         if (uri == null) return null
-        var fileName = tryWith {
-            context.contentResolver.query(uri, arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null)?.use {
+        var fileName = ""
+        var mimeType = ""
+        tryWith {
+            context.contentResolver.query(uri, arrayOf(
+                MediaStore.MediaColumns.DISPLAY_NAME,
+                MediaStore.MediaColumns.MIME_TYPE
+            ), null, null, null)?.use {
                 if (it.moveToFirst()) {
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME));
+                    fileName = it.getString(it.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME))
+                    mimeType = it.getString(it.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE))
                 } else {
                     ""
                 }
             }
         }
-        if (fileName.isNullOrEmpty()) {
-            val document = DocumentFile.fromSingleUri(context, uri)
-            if (document?.type == null) {
-                throw IllegalArgumentException("uri must be a file not a directory")
-            }
-            val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(document.type)
+        if (fileName.isEmpty()) {
+            val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
             fileName = "${System.currentTimeMillis()}.${ext}"
         }
 
@@ -100,6 +102,14 @@ object FileUtils {
         }
         val cacheDir = context.externalCacheDir ?: context.cacheDir
         return File(cacheDir, "${prefix}_${timeStamp}.$ext")
+    }
+
+    /**
+     * 在应用内部目录创建一个文件
+     */
+    fun createFile(context: Context, folder: String, name: String): File {
+        val fileDir = context.getExternalFilesDir(folder) ?: File(context.filesDir, folder)
+        return File(fileDir, name)
     }
 
     fun file2Uri(context: Context, file: File, authority: String): Uri {
