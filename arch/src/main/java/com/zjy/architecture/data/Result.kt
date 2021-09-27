@@ -12,7 +12,7 @@ sealed class Result<out T> {
 
     data class Error(val e: Throwable) : Result<Nothing>()
 
-    object Loading : Result<Nothing>()
+    data class Loading(val progress: Float = 0f) : Result<Nothing>()
 
     override fun toString(): String {
         return when (this) {
@@ -28,6 +28,14 @@ sealed class Result<out T> {
 
     fun isLoading(): Boolean {
         return this is Loading
+    }
+
+    fun progress(): Float {
+        return when (this) {
+            is Success -> 1f
+            is Loading -> progress
+            else -> 0f
+        }
     }
 
     fun data(): T {
