@@ -56,11 +56,11 @@ abstract class BaseFragment : Fragment(), Loadable, FragmentHandleBackInterface 
             return
         }
         if (dialog == null) {
-            dialog = LoadingDialog(activity, cancelable)
+            dialog = LoadingDialog(requireContext(), cancelable)
             dialog?.setCanceledOnTouchOutside(false)
         }
         if (dialog?.isShowing == false) {
-            dialog?.cancelable = cancelable
+            dialog?.setCancelable(cancelable)
             dialog?.show()
         }
     }
