@@ -7,8 +7,9 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="120dp"
+        android:minWidth="120dp"
         android:background="@drawable/arch_dialog_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -21,9 +22,13 @@
             android:indeterminateDrawable="@drawable/arch_loading_progress" />
 
         <TextView
+            android:id="@+id/tv_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
+            android:maxWidth="200dp"
+            android:singleLine="true"
+            android:paddingHorizontal="15dp"
             android:text="@string/arch_data_loading"
             android:textColor="#DDDDDD"
             android:textSize="16sp" />

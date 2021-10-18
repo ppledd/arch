@@ -1,31 +1,43 @@
-package com.zjy.architecture.widget;
+package com.zjy.architecture.widget
 
-import android.app.Dialog;
-import android.content.Context;
-import android.os.Bundle;
-
-import com.zjy.architecture.R;
+import android.app.Dialog
+import android.content.Context
+import android.os.Bundle
+import android.widget.TextView
+import com.zjy.architecture.R
 
 /**
- * Created by xiufeng on 2018/4/23.
+ * @author zhengjy
+ * @since 2021/10/18
+ * Description:
  */
-public class LoadingDialog extends Dialog {
+class LoadingDialog(
+    context: Context,
+    var _cancelable: Boolean
+) : Dialog(context, R.style.loadingdialog) {
+    private var tvTips: TextView? = null
 
-    protected static final String TAG = "LoadingDialog";
+    private var tips: String? = null
 
-    private Context context;
-    public boolean cancelable;
-
-    public LoadingDialog(Context context, boolean cancelable) {
-        super(context, R.style.loadingdialog);
-        this.context = context;
-        this.cancelable = cancelable;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.dialog_loading)
+        setCancelable(_cancelable)
+        tvTips = findViewById(R.id.tv_tips)
+        if (!tips.isNullOrEmpty()) {
+            tvTips?.text = tips
+        }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_loading);
-        setCancelable(cancelable);
+    fun setTipsText(tips: String?): LoadingDialog {
+        this.tips = tips
+        if (!tips.isNullOrEmpty()) {
+            tvTips?.text = tips
+        }
+        return this
+    }
+
+    companion object {
+        protected const val TAG = "LoadingDialog"
     }
 }
