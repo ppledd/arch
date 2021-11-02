@@ -70,8 +70,8 @@ object ActivityUtils {
         }
     }
 
-    fun getTopActivity(): Activity {
-        return activityList.last()
+    fun getTopActivity(): Activity? {
+        return activityList.lastOrNull()
     }
 
     fun isActivityTop(context: Context, clazz: Class<*>): Boolean {
@@ -84,9 +84,13 @@ object ActivityUtils {
      * @return  true在栈顶 false不在栈顶
      */
     fun isActivityTop(context: Context, clazzName: String): Boolean {
-        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val name = manager.getRunningTasks(1)[0].topActivity!!.className
-        return name == clazzName
+        return try {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val name = manager.getRunningTasks(1)[0].topActivity!!.className
+            name == clazzName
+        } catch (e: Exception) {
+            false
+        }
     }
 
     /**
