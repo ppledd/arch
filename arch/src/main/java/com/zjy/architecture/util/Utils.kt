@@ -1,5 +1,6 @@
 package com.zjy.architecture.util
 
+import android.app.PendingIntent
 import android.os.Build
 import android.os.Environment
 
@@ -34,3 +35,21 @@ inline val isAndroidN: Boolean
  */
 inline val isAndroidM: Boolean
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+
+inline val Int.immutableFlag: Int
+    get() {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            this or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            this
+        }
+    }
+
+inline val Int.mutableFlag: Int
+    get() {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            this or PendingIntent.FLAG_MUTABLE
+        } else {
+            this
+        }
+    }
