@@ -38,7 +38,7 @@ inline val isAndroidM: Boolean
 
 inline val Int.immutableFlag: Int
     get() {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this or PendingIntent.FLAG_IMMUTABLE
         } else {
             this
