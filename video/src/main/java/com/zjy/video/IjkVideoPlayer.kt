@@ -86,17 +86,17 @@ internal class IjkVideoPlayer : FrameLayout {
         //生成一个新的surface view
         surfaceView = SurfaceView(mContext)
         surfaceView.holder.addCallback(object : SurfaceHolder.Callback {
-            override fun surfaceCreated(holder: SurfaceHolder?) {
+            override fun surfaceCreated(holder: SurfaceHolder) {
 
             }
 
-            override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
                 load()
                 mHandler.removeCallbacks(progressRunnable)
                 mHandler.postDelayed(progressRunnable, 1000)
             }
 
-            override fun surfaceDestroyed(holder: SurfaceHolder?) {
+            override fun surfaceDestroyed(holder: SurfaceHolder) {
 
             }
         })
