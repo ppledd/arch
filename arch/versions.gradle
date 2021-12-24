@@ -1,7 +1,7 @@
 ext.deps = [:]
 def deps = [:]
 def versions = [:]
-versions.android_gradle_plugin = '7.0.3'
+versions.android_gradle_plugin = '4.1.2'
 versions.protobuf_gradle_plugin = '0.8.18'
 
 versions.constraint_layout = "2.0.4"
