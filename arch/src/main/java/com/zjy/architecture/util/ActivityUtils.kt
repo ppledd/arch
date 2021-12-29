@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
 object ActivityUtils {
 
     private val activityList: MutableList<Activity> = ArrayList()
-    private var activityCount = AtomicInteger(0)
+    private val activityCount = AtomicInteger(0)
 
     fun registerActivityLifecycleCallbacks(application: Application) {
         application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
@@ -90,6 +90,24 @@ object ActivityUtils {
             name == clazzName
         } catch (e: Exception) {
             false
+        }
+    }
+
+    /**
+     * 回退至指定activity
+     */
+    @Synchronized
+    fun popUpTo(destination: String, inclusive: Boolean = false) {
+        val list = ArrayList(activityList)
+        while (list.isNotEmpty()) {
+            val activity = list.last()
+            if (activity.javaClass.name == destination) {
+                if (inclusive) {
+                    activity.finish()
+                }
+                return
+            }
+            activity.finish()
         }
     }
 
