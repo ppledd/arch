@@ -108,6 +108,7 @@ object ActivityUtils {
                 return
             }
             activity.finish()
+            list.remove(activity)
         }
     }
 
