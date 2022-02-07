@@ -81,4 +81,12 @@ object RomUtils : Rom {
             default.openNotificationSetting(context, channelId)
         }
     }
+
+    override fun needAuthInstallPermission(context: Context): Boolean {
+        return try {
+            rom.needAuthInstallPermission(context)
+        } catch (e: Exception) {
+            default.needAuthInstallPermission(context)
+        }
+    }
 }

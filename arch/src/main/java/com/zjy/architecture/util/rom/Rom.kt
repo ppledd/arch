@@ -35,6 +35,13 @@ interface Rom {
      */
     fun openNotificationSetting(context: Context, channelId: String)
 
+    /**
+     * 是否需要跳转安装应用许可页面
+     *
+     * 部分Rom不需要跳转即可安装
+     */
+    fun needAuthInstallPermission(context: Context): Boolean
+
     open class DefaultRom : Rom {
         override fun canShowViewOnLockScreen(context: Context): Boolean {
             return true
@@ -85,6 +92,10 @@ interface Rom {
                     context.toast(R.string.arch_error_unable_open_notification_setting)
                 }
             }
+        }
+
+        override fun needAuthInstallPermission(context: Context): Boolean {
+            return false
         }
 
         /**

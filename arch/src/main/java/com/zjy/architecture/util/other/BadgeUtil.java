@@ -32,7 +32,7 @@ public class BadgeUtil {
         if (count <= 0) {
             count = 0;
         } else {
-            count = Math.max(0, Math.min(count, 99));
+            count = Math.min(count, 1000);
         }
 
         if (Build.MANUFACTURER.equalsIgnoreCase("sony")) {

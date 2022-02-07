@@ -10,6 +10,7 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import com.zjy.architecture.R
+import com.zjy.architecture.util.rom.RomUtils
 import java.io.File
 
 /**
@@ -91,24 +92,14 @@ object InstallUtil {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun startInstallO(context: Context, file: File, authority: String) {
         val isGranted = context.packageManager.canRequestPackageInstalls()
-        if (isGranted) {
-            startInstallN(context, file, authority)
+        if (isGranted || RomUtils.needAuthInstallPermission(context)) {
+            try {
+                startInstallN(context, file, authority)
+            } catch (e: Exception) {
+                requestInstallPermission(context)
+            }
         } else {
-            AlertDialog.Builder(context)
-                .setCancelable(false)
-                .setTitle(context.getString(R.string.arch_request_install_unknown))
-                .setPositiveButton(
-                    context.getString(R.string.arch_confirm)
-                ) { _, _ ->
-                    val intent = Intent()
-                    intent.data = Uri.parse("package:" + context.packageName)
-                    intent.action = Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
-                    (context as Activity).startActivityForResult(
-                        intent,
-                        UNKNOWN_CODE
-                    )
-                }
-                .show()
+            requestInstallPermission(context)
         }
     }
 
@@ -118,24 +109,32 @@ object InstallUtil {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun startInstallO(context: Context, apkUri: Uri) {
         val isGranted = context.packageManager.canRequestPackageInstalls()
-        if (isGranted) {
-            startInstallN(context, apkUri)
+        if (isGranted || RomUtils.needAuthInstallPermission(context)) {
+            try {
+                startInstallN(context, apkUri)
+            } catch (e: Exception) {
+                requestInstallPermission(context)
+            }
         } else {
-            AlertDialog.Builder(context)
-                .setCancelable(false)
-                .setTitle(context.getString(R.string.arch_request_install_unknown))
-                .setPositiveButton(
-                    context.getString(R.string.arch_confirm)
-                ) { _, _ ->
-                    val intent = Intent()
-                    intent.data = Uri.parse("package:" + context.packageName)
-                    intent.action = Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
-                    (context as Activity).startActivityForResult(
-                        intent,
-                        UNKNOWN_CODE
-                    )
-                }
-                .show()
+            requestInstallPermission(context)
         }
+    }
+
+    private fun requestInstallPermission(context: Context) {
+        AlertDialog.Builder(context)
+            .setCancelable(false)
+            .setTitle(context.getString(R.string.arch_request_install_unknown))
+            .setPositiveButton(
+                context.getString(R.string.arch_confirm)
+            ) { _, _ ->
+                val intent = Intent()
+                intent.data = Uri.parse("package:" + context.packageName)
+                intent.action = Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
+                (context as Activity).startActivityForResult(
+                    intent,
+                    UNKNOWN_CODE
+                )
+            }
+            .show()
     }
 }
