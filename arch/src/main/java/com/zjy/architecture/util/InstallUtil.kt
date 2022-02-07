@@ -92,7 +92,7 @@ object InstallUtil {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun startInstallO(context: Context, file: File, authority: String) {
         val isGranted = context.packageManager.canRequestPackageInstalls()
-        if (isGranted || RomUtils.needAuthInstallPermission(context)) {
+        if (isGranted || !RomUtils.needAuthInstallPermission(context)) {
             try {
                 startInstallN(context, file, authority)
             } catch (e: Exception) {
@@ -109,7 +109,7 @@ object InstallUtil {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun startInstallO(context: Context, apkUri: Uri) {
         val isGranted = context.packageManager.canRequestPackageInstalls()
-        if (isGranted || RomUtils.needAuthInstallPermission(context)) {
+        if (isGranted || !RomUtils.needAuthInstallPermission(context)) {
             try {
                 startInstallN(context, apkUri)
             } catch (e: Exception) {
