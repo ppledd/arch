@@ -51,7 +51,10 @@ fun ImageView.load(
 ) {
     Glide.with(this).load(uri).let {
         if (crossFade) it.transition(DrawableTransitionOptions.withCrossFade()) else it
-    }.apply(RequestOptions().placeholder(placeholder).let { block?.invoke(it) ?: it }).into(this)
+    }.apply(RequestOptions().let {
+        val t = if (placeholder != 0) it.placeholder(placeholder) else it
+        block?.invoke(t) ?: t
+    }).into(this)
 }
 
 fun ImageView.load(
@@ -62,5 +65,8 @@ fun ImageView.load(
 ) {
     Glide.with(this).load(uri).let {
         if (crossFade) it.transition(DrawableTransitionOptions.withCrossFade()) else it
-    }.apply(RequestOptions().placeholder(placeholder).let { block?.invoke(it) ?: it }).into(this)
+    }.apply(RequestOptions().let {
+        val t = if (placeholder != 0) it.placeholder(placeholder) else it
+        block?.invoke(t) ?: t
+    }).into(this)
 }
