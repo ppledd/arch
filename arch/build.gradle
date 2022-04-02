@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
-        versionCode 20
-        versionName "1.0.19"
+        versionCode 21
+        versionName "1.0.20"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -56,8 +56,8 @@ dependencies {
     api deps.androidx.core_ktx
     api deps.androidx.activity_ktx
     api deps.androidx.fragment_ktx
-    api deps.androidx.recyclerview
-    api deps.androidx.documentfile
+//    api deps.androidx.recyclerview
+//    api deps.androidx.documentfile
 
     api deps.lifecycle.viewmodel_ktx
     api deps.lifecycle.livedata_ktx
@@ -77,9 +77,9 @@ dependencies {
     api deps.retrofit_url
 
     api deps.glide.runtime
-    api deps.brvah
+//    api deps.brvah
     api deps.gson
-    api deps.background
+//    api deps.background
     api deps.arouter.api
 
     api deps.mars.xlog
