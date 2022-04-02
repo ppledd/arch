@@ -47,20 +47,20 @@ fun ImageView.load(
     uri: String?,
     placeholder: Int = 0,
     crossFade: Boolean = false,
-    block: RequestOptions.() -> RequestOptions
+    block: (RequestOptions.() -> RequestOptions)? = null
 ) {
     Glide.with(this).load(uri).let {
         if (crossFade) it.transition(DrawableTransitionOptions.withCrossFade()) else it
-    }.apply(RequestOptions().placeholder(placeholder).block()).into(this)
+    }.apply(RequestOptions().placeholder(placeholder).let { block?.invoke(it) ?: it }).into(this)
 }
 
 fun ImageView.load(
     uri: Uri?,
     placeholder: Int = 0,
     crossFade: Boolean = false,
-    block: RequestOptions.() -> RequestOptions
+    block: (RequestOptions.() -> RequestOptions)? = null
 ) {
     Glide.with(this).load(uri).let {
         if (crossFade) it.transition(DrawableTransitionOptions.withCrossFade()) else it
-    }.apply(RequestOptions().placeholder(placeholder).block()).into(this)
+    }.apply(RequestOptions().placeholder(placeholder).let { block?.invoke(it) ?: it }).into(this)
 }
