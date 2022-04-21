@@ -28,7 +28,7 @@ versions.work = "2.5.0"
 versions.compose = "1.1.0-beta03"
 
 versions.wcdb = "1.0.8"
-versions.koin = "2.2.0-alpha-1"
+versions.koin = "3.1.6"
 versions.glide = "4.11.0"
 versions.arouter = "1.4.0"
 versions.arouterc = "1.2.1"
@@ -141,14 +141,11 @@ deps.navigation = navigation
  */
 // kotlin依赖注入
 def koin = [:]
-koin.core = "org.koin:koin-core:$versions.koin"
-koin.core_ext = "org.koin:koin-core-ext:$versions.koin"
-koin.android = "org.koin:koin-android:$versions.koin"
-koin.android_scope = "org.koin:koin-androidx-scope:$versions.koin"
-koin.android_viewmodel = "org.koin:koin-androidx-viewmodel:$versions.koin"
-koin.android_fragment = "org.koin:koin-androidx-fragment:$versions.koin"
-koin.android_ext = "org.koin:koin-androidx-ext:$versions.koin"
-koin.plugin = "org.koin:koin-gradle-plugin:$versions.koin"
+koin.core = "io.insert-koin:koin-core:$versions.koin"
+koin.android = "io.insert-koin:koin-android:$versions.koin"
+koin.work_manager = "io.insert-koin:koin-androidx-workmanager:$versions.koin"
+koin.navigation = "io.insert-koin:koin-androidx-navigation:$versions.koin"
+koin.compose = "io.insert-koin:koin-androidx-compose:$versions.koin"
 deps.koin = koin
 
 def retrofit = [:]

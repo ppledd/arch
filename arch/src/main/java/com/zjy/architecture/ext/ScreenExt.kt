@@ -51,9 +51,9 @@ val Context.screenSize: Point
 /**
  * 适配统一分辨率，宽度统一为360dp
  */
-fun setCustomDensity(activity: Activity) {
+fun setCustomDensity(activity: Activity, dp: Int) {
     val applicationMetrics = Resources.getSystem().displayMetrics
-    val targetDensity: Float = (applicationMetrics.widthPixels / 360).toFloat()
+    val targetDensity: Float = (applicationMetrics.widthPixels / dp).toFloat()
     val targetDensityDpi = 160 * targetDensity
 
     applicationMetrics.density = targetDensity

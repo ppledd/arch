@@ -20,6 +20,8 @@ abstract class BaseActivity : AppCompatActivity(), Loadable {
     @get:LayoutRes
     abstract val layoutId: Int
 
+    open val widthDp: Int = 360
+
     //自定义加载框
     open var dialog: LoadingDialog? = null
 
@@ -41,7 +43,7 @@ abstract class BaseActivity : AppCompatActivity(), Loadable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setCustomDensity(this)
+        setCustomDensity(this, widthDp)
         setContentView()
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             if (!isInMultiWindowMode && !isInPictureInPictureMode) {

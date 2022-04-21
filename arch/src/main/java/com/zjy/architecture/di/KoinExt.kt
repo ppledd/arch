@@ -1,6 +1,7 @@
 package com.zjy.architecture.di
 
-import org.koin.core.context.KoinContextHandler
+import org.koin.core.annotation.KoinInternalApi
+import org.koin.core.context.GlobalContext
 import org.koin.core.scope.Scope
 
 /**
@@ -12,5 +13,6 @@ import org.koin.core.scope.Scope
 /**
  * 获取rootScope
  */
+@OptIn(KoinInternalApi::class)
 val rootScope: Scope
-    get() = KoinContextHandler.get()._scopeRegistry.rootScope
+    get() = GlobalContext.get().scopeRegistry.rootScope
