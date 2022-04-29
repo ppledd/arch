@@ -172,6 +172,9 @@ public class KeyboardHeightProvider extends PopupWindow implements LifecycleObse
     private void notifyKeyboardHeightChanged(int height, int orientation) {
         if (height <= 0) {
             baseHeight = height;
+            if (observer != null) {
+                observer.onKeyboardHide();
+            }
         }
         if (observer != null && height > 0) {
             observer.onKeyboardHeightChanged(height - baseHeight, orientation);

@@ -32,4 +32,6 @@ public interface KeyboardHeightObserver {
      *                      Configuration.ORIENTATION_LANDSCAPE
      */
     void onKeyboardHeightChanged(int height, int orientation);
+
+    void onKeyboardHide();
 }
