@@ -11,10 +11,11 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.PopupWindow;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.zjy.architecture.R;
 
@@ -22,7 +23,7 @@ import com.zjy.architecture.R;
  * The keyboard height provider, this class uses a PopupWindow
  * to calculate the window height when the floating keyboard is opened and closed.
  */
-public class KeyboardHeightProvider extends PopupWindow implements LifecycleObserver {
+public class KeyboardHeightProvider extends PopupWindow implements LifecycleEventObserver {
 
     /**
      * The tag for logging purposes
@@ -95,13 +96,22 @@ public class KeyboardHeightProvider extends PopupWindow implements LifecycleObse
         }
     }
 
-    @OnLifecycleEvent(value = Lifecycle.Event.ON_RESUME)
-    public void resume() {
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_START) {
+            onStart();
+        } else if (event == Lifecycle.Event.ON_STOP) {
+            onStop();
+        } else if (event == Lifecycle.Event.ON_DESTROY) {
+            onDestroy();
+        }
+    }
+
+    public void onStart() {
         popupView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     }
 
-    @OnLifecycleEvent(value = Lifecycle.Event.ON_PAUSE)
-    public void pause() {
+    public void onStop() {
         popupView.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
     }
 
@@ -109,8 +119,7 @@ public class KeyboardHeightProvider extends PopupWindow implements LifecycleObse
      * Close the keyboard height provider,
      * this provider will not be used anymore.
      */
-    @OnLifecycleEvent(value = Lifecycle.Event.ON_DESTROY)
-    public void close() {
+    public void onDestroy() {
         dismiss();
         observer = null;
     }

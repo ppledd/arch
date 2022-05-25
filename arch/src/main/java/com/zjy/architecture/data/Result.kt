@@ -39,7 +39,7 @@ sealed class Result<out T> {
     }
 
     fun data(): T {
-        return (this as Success<T>).data ?: (Any() as T)
+        return (this as Success<T>).data
     }
 
     fun dataOrNull(): T? {
