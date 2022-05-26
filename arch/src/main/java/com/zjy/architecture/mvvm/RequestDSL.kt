@@ -64,6 +64,39 @@ fun <T> LoadingViewModel.request(
                     onStart?.invoke()
                     onRequest?.invoke(this)?.apply {
                         if (isSucceed()) {
+                            onSuccess?.invoke(dataNotNull())
+                        } else {
+                            processError(onFail, error())
+                        }
+                    }
+                } catch (e: Exception) {
+                    processError(onFail, handleException(e))
+                } finally {
+                    onComplete?.invoke()
+                    if (loading) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }.apply(block).build()
+}
+
+fun <T> LoadingViewModel.requestNullable(
+    loading: Boolean = true,
+    cancelable: Boolean = true,
+    block: RequestDSL<T>.() -> Unit
+) {
+    object : RequestDSL<T>() {
+        override fun build() {
+            launch {
+                try {
+                    if (loading) {
+                        loading(cancelable)
+                    }
+                    onStart?.invoke()
+                    onRequest?.invoke(this)?.apply {
+                        if (isSucceed()) {
                             onSuccess?.invoke(data())
                         } else {
                             processError(onFail, error())

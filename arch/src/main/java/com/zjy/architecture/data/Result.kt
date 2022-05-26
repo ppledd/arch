@@ -42,6 +42,10 @@ sealed class Result<out T> {
         return (this as Success<T>).data
     }
 
+    fun dataNotNull(): T {
+        return (this as Success<T>).data ?: (Any() as T)
+    }
+
     fun dataOrNull(): T? {
         return (this as? Success<T>)?.data
     }
