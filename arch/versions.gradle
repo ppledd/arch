@@ -28,7 +28,7 @@ versions.work = "2.5.0"
 versions.compose = "1.1.0-beta03"
 
 versions.wcdb = "1.0.8"
-versions.koin = "3.1.6"
+versions.koin = "3.2.0-beta-1"
 versions.glide = "4.11.0"
 versions.arouter = "1.4.0"
 versions.arouterc = "1.2.1"
