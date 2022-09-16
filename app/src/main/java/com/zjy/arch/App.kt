@@ -1,6 +1,8 @@
 package com.zjy.arch
 
 import android.app.Application
+import android.content.Context
+import com.zjy.arch.hook.HookHelper
 import com.zjy.architecture.Arch
 
 /**
@@ -9,6 +11,11 @@ import com.zjy.architecture.Arch
  * Description:
  */
 class App : Application() {
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        HookHelper.hookInstrumentation(base)
+    }
 
     override fun onCreate() {
         super.onCreate()

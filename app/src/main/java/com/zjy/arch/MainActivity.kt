@@ -125,6 +125,9 @@ class MainActivity : AppCompatActivity() {
         button5.setOnClickListener {
             startActivity(Intent(this, VideoActivity::class.java))
         }
+        button6.setOnClickListener {
+            startActivity(Intent().setClassName(packageName, "com.zjy.pluginhook.TargetActivity"))
+        }
     }
 
     private fun gson() {

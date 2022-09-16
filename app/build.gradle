@@ -33,6 +33,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -71,6 +74,7 @@ dependencies {
     implementation project(':chat')
     implementation project(':bar-code')
     implementation project(':video')
+    implementation project(':pluginhook')
 
     implementation deps.androidx.constraint_layout
     implementation deps.androidx.viewpager2

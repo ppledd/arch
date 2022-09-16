@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/bar-code" />
             <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/filepicker" />
+            <option value="$PROJECT_DIR$/pluginhook" />
             <option value="$PROJECT_DIR$/video" />
           </set>
         </option>

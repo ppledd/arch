@@ -1,18 +1,23 @@
 package com.zjy.video
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Matrix
+import android.graphics.RectF
+import android.graphics.SurfaceTexture
 import android.os.Handler
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.SurfaceHolder
-import android.view.SurfaceView
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.SeekBar
+import androidx.core.view.children
+import kotlinx.android.synthetic.main.activity_video.*
+import tv.danmaku.ijk.media.player.IMediaPlayer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.IOException
 import kotlin.math.max
 import kotlin.math.min
+
 
 /**
  * @author zhengjy
@@ -23,8 +28,10 @@ internal class IjkVideoPlayer : FrameLayout {
 
     private val mContext: Context
     private lateinit var surfaceView: SurfaceView
+    private lateinit var textureView: TextureView
     lateinit var mediaPlayer: IjkMediaPlayer
     private var listener: VideoPlayerListener? = null
+    private var surfaceTexture: SurfaceTexture? = null
     private var mPath: String? = null
 
     private val mHandler = Handler()
@@ -35,6 +42,14 @@ internal class IjkVideoPlayer : FrameLayout {
     private var duration = 0L
     private var originPosition = 0L
     private var seekPosition = 0L
+
+    private var videoHeight = 0
+    private var videoWidth = 0
+
+    private var mRotation = 0f
+
+    private var maxHeight = 500
+    private var maxWidth = 0
 
     private val progressRunnable = object : Runnable {
         override fun run() {
@@ -79,7 +94,9 @@ internal class IjkVideoPlayer : FrameLayout {
     }
 
     private fun initVideoView() {
-        createSurfaceView()
+        maxWidth = context.resources.displayMetrics.widthPixels
+//        createSurfaceView()
+        createTextureView()
     }
 
     private fun createSurfaceView() {
@@ -105,6 +122,40 @@ internal class IjkVideoPlayer : FrameLayout {
         addView(surfaceView)
     }
 
+    private fun createTextureView() {
+        //生成一个新的surface view
+        textureView = TextureView(mContext)
+        textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+//                videoWidth = width
+//                videoHeight = height
+                surfaceTexture = surface
+                load()
+                mHandler.removeCallbacks(progressRunnable)
+                mHandler.postDelayed(progressRunnable, 1000)
+            }
+
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
+                
+            }
+
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
+                surfaceTexture?.release()
+                surfaceTexture = null
+                mHandler.removeCallbacks(progressRunnable)
+                return true
+            }
+
+            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
+                
+            }
+
+        }
+        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER)
+        textureView.layoutParams = layoutParams
+        addView(textureView)
+    }
+
     fun setVideoPath(path: String?) {
         mPath = path
         load()
@@ -114,7 +165,7 @@ internal class IjkVideoPlayer : FrameLayout {
      * 加载视频
      */
     private fun load() {
-        if (mPath == null) {
+        if (mPath == null || surfaceTexture == null) {
             return
         }
         //每次都要重新创建IMediaPlayer
@@ -125,7 +176,8 @@ internal class IjkVideoPlayer : FrameLayout {
             e.printStackTrace()
         }
         //给mediaPlayer设置视图
-        mediaPlayer.setDisplay(surfaceView.holder)
+//        mediaPlayer.setDisplay(surfaceView.holder)
+        mediaPlayer.setSurface(Surface(surfaceTexture))
         mediaPlayer.prepareAsync()
     }
 
@@ -146,7 +198,28 @@ internal class IjkVideoPlayer : FrameLayout {
     }
 
     fun setVideoRotation(rotation: Float) {
-        surfaceView.rotation = rotation
+//        val canvas = surfaceView.holder.lockCanvas()
+//        canvas.rotate(rotation)
+//        surfaceView.holder.unlockCanvasAndPost(canvas)
+
+        textureView.rotation = rotation
+
+        val matrix = Matrix()
+        textureView.getTransform(matrix)
+        val src = RectF(0f, 0f, textureView.height.toFloat(), textureView.width.toFloat())
+        val dst = RectF(0f, 0f, textureView.width.toFloat(), textureView.height.toFloat())
+        val screen = RectF(dst)
+        matrix.postRotate(rotation, screen.centerX(), screen.centerY())
+
+        matrix.mapRect(dst)
+        matrix.setRectToRect(src, dst, Matrix.ScaleToFit.CENTER)
+
+        matrix.mapRect(src)
+        matrix.setRectToRect(screen, src, Matrix.ScaleToFit.FILL)
+
+        matrix.postRotate(rotation, screen.centerX(), screen.centerY())
+
+        textureView.setTransform(matrix)
     }
 
     fun setListener(listener: VideoPlayerListener) {
@@ -164,13 +237,28 @@ internal class IjkVideoPlayer : FrameLayout {
 
     private fun setListenerInternal() {
         mediaPlayer.setOnPreparedListener { player ->
-            duration = player?.duration ?: 0L
+            duration = player.duration
+            videoWidth = player.videoWidth
+            videoHeight = player.videoHeight
+            requestLayout()
             listener?.onPrepared(player)
         }
-        mediaPlayer.setOnInfoListener(listener)
+        mediaPlayer.setOnTimedTextListener(listener)
+        mediaPlayer.setOnInfoListener {player, what, extra ->
+            if (what == IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED) {
+                //这里返回了视频旋转的角度，根据角度旋转视频到正确的画面
+                mRotation = extra.toFloat()
+            }
+            return@setOnInfoListener listener?.onInfo(player, what, extra) ?: false
+        }
         mediaPlayer.setOnSeekCompleteListener(listener)
         mediaPlayer.setOnBufferingUpdateListener(listener)
         mediaPlayer.setOnErrorListener(listener)
+        mediaPlayer.setOnVideoSizeChangedListener(listener)
+        mediaPlayer.setOnCompletionListener {
+            mHandler.removeCallbacks(progressRunnable)
+            listener?.onCompletion(it)
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -199,6 +287,79 @@ internal class IjkVideoPlayer : FrameLayout {
             }
         }
         return true
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        if (mRotation == 90f || mRotation == 270f) {
+            doMeasure(heightMeasureSpec, widthMeasureSpec)
+        } else {
+            doMeasure(widthMeasureSpec, heightMeasureSpec)
+        }
+    }
+
+    @SuppressLint("WrongCall")
+    private fun doMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val width = MeasureSpec.getSize(widthMeasureSpec)
+        val wSpec = MeasureSpec.getMode(widthMeasureSpec)
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+        val hSpec = MeasureSpec.getMode(heightMeasureSpec)
+
+
+        val videoRatio = if (videoWidth != 0 && videoHeight != 0) {
+            videoWidth * 1f / videoHeight
+        } else -1f
+        if (videoRatio == -1f) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+            return
+        }
+        if (wSpec == MeasureSpec.AT_MOST && hSpec == MeasureSpec.AT_MOST) {
+            if (height > maxHeight && width <= maxWidth) {
+                val newWidth = maxHeight * videoRatio
+                setMeasuredDimension(
+                    MeasureSpec.makeMeasureSpec(newWidth.toInt(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.EXACTLY)
+                )
+
+                children.forEach {
+                    it.measure(
+                        MeasureSpec.makeMeasureSpec(newWidth.toInt(), MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.EXACTLY)
+                    )
+                }
+            } else if (height <= maxHeight && width > maxWidth) {
+                val newHeight = maxWidth / videoRatio
+                setMeasuredDimension(
+                    MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(newHeight.toInt(), MeasureSpec.EXACTLY)
+                )
+            } else {
+                val w = min(width, maxWidth)
+                val h = min(height, maxHeight)
+                val ratio = w * 1f / min(height, maxHeight)
+                if (ratio < videoRatio) {
+                    // 视频更宽，优先满足视频宽度
+                    val newHeight = w / videoRatio
+                    setMeasuredDimension(
+                        MeasureSpec.makeMeasureSpec(w, MeasureSpec.AT_MOST),
+                        MeasureSpec.makeMeasureSpec(newHeight.toInt(), MeasureSpec.AT_MOST)
+                    )
+                } else {
+                    val newWidth = h * videoRatio
+                    setMeasuredDimension(
+                        MeasureSpec.makeMeasureSpec(newWidth.toInt(), MeasureSpec.AT_MOST),
+                        MeasureSpec.makeMeasureSpec(h, MeasureSpec.AT_MOST)
+                    )
+                }
+            }
+        } else if (wSpec == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
+        } else if (hSpec == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
+        } else {
+            setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
+//            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        }
     }
 
     fun onPause() {

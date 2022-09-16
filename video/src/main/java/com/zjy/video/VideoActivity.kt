@@ -29,7 +29,7 @@ class VideoActivity: AppCompatActivity() {
 
 //        ivp_video.setVideoPath("/storage/emulated/0/DCIM/Camera/VID_20201114_005546.mp4")
 //        ivp_video.setVideoPath("/storage/emulated/0/DCIM/Camera/VID_20201117_112359.mp4")
-        ivp_video.setVideoPath("/storage/emulated/0/DCIM/Camera/VID_20201017_145305.mp4")
+        ivp_video.setVideoPath("/storage/emulated/0/DCIM/Camera/VID_20220429_132811_0_COMPRESSED.mp4")
         ivp_video.setSeekBar(sb_progress)
         ivp_video.setListener(object : VideoPlayerListener {
             override fun onPrepared(p0: IMediaPlayer?) {
