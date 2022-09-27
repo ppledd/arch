@@ -1,13 +1,14 @@
 package com.zjy.architecture.util
 
 import com.tencent.mars.xlog.Log
+import com.zjy.architecture.Arch
 
 /**
  * @author zhengjy
  * @since 2021/01/07
  * Description:
  */
-const val TAG = "ARCH_LOG::"
+val TAG = if (Arch.tagEnable) "ARCH_LOG::" else ""
 
 inline fun <reified T> T.logV(message: String?) {
     Log.v("$TAG${T::class.java.simpleName}", message)

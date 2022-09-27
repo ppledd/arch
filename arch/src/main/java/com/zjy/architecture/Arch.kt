@@ -36,6 +36,10 @@ object Arch {
      * 是否开启Debug模式
      */
     var debug: Boolean = false
+    /**
+     * 是否启用默认日志tag
+     */
+    var tagEnable: Boolean = false
 
     private var mContext: Context? = null
 
@@ -93,6 +97,10 @@ object Arch {
 
             inject?.invoke(this)
         }
+    }
+
+    fun enableDefaultTag(enable: Boolean) {
+        this.tagEnable = enable
     }
 
     /**
