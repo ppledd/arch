@@ -77,7 +77,7 @@ object Arch {
              inject: (KoinApplication.() -> Unit)? = null) {
         this.mContext = context.applicationContext
         this.debug = debug
-        openXLog(context, debug, encryptKey)
+        //openXLog(context, debug, encryptKey)
         ActivityUtils.registerActivityLifecycleCallbacks(context as Application)
         // 初始化ARouter
         if (debug) {
